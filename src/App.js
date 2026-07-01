@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 const YT_COLOR="#c0392b",AP_COLOR="#8b5cf6",SP_COLOR="#1db954",OOTB_COLOR="#2563eb";
+const TYPE_BADGE_COLORS={Presentation:"#f59e0b",React:"#64748b"};
 
 const YT_MONTHLY=[
   {month:"Apr '25",views:2255,watchHours:206,subs:56},
@@ -141,13 +142,88 @@ const PODCAST_Q2=[
   {idx:11,title:"Why Isn't the Economy Breaking?",date:"Jun 23",plays:1048,audience:983,consumption:"41h 10m",avg:"21m",avgSec:1260,completion:52,delta:17,impressions:1317},
 ];
 
-// ── PLACEHOLDER ARRAYS — populate when data is available ─────────────────────
-// Q1 YouTube per-episode. Format: {idx,title,date,views,watchHrs,ctr,avgDur}
-const Q1_YT_FLAGSHIP=[];
-// Q1 podcast per-episode. Format: {idx,title,date,plays,audience,consumption,avg,avgSec,completion,delta,impressions}
-const Q1_PODCAST=[];
-// Shorts. Format: {idx,title,date,views,quarter}  quarter="Q1 '26" or "Q2 '26"
-const YT_SHORTS=[];
+// ── Q1 2026 — YouTube per-episode (23 episodes, Jan 6 – Mar 30) ──────────────
+const Q1_YT_FLAGSHIP=[
+  {idx:0,type:"Main",title:"The Truth About Whole Life Insurance: Experts Debate (Part 1)",date:"Jan 6",views:2369,watchHrs:542.7,ctr:5.4,avgDur:"13:44",impressions:23800},
+  {idx:1,type:"Main",title:"Oil Prices & Venezuela: What Investors Need to Know for 2026",date:"Jan 13",views:317,watchHrs:58.8,ctr:2.8,avgDur:"11:05",impressions:3300},
+  {idx:2,type:"Main",title:"The Truth About Whole Life Insurance: Experts Debate (Part 2)",date:"Jan 20",views:1613,watchHrs:346.9,ctr:4.5,avgDur:"12:54",impressions:21900},
+  {idx:3,type:"Main",title:"Dr. Peter Linneman on AI Myths, the Future of Multifamily & the Shrinking Federal Workforce",date:"Jan 27",views:503,watchHrs:125.6,ctr:5.6,avgDur:"14:55",impressions:3800},
+  {idx:4,type:"Main",title:"The Billionaire Tax Battle: CA vs. MO (And How to Pay Less)",date:"Feb 3",views:176,watchHrs:26.9,ctr:2.9,avgDur:"9:06",impressions:3100},
+  {idx:5,type:"Main",title:"Bob Fraser's 2026 Economic Outlook: Investable Megatrends & Market Opportunities",date:"Feb 10",views:404,watchHrs:60.1,ctr:3.0,avgDur:"8:55",impressions:6700},
+  {idx:6,type:"Presentation",title:"Belinda Román: 2026 Macro Outlook",date:"Feb 12",views:242,watchHrs:43.5,ctr:4.3,avgDur:"10:46",impressions:2200},
+  {idx:7,type:"Presentation",title:"John Chang: 2026 Economic Outlook",date:"Feb 13",views:153,watchHrs:43.9,ctr:2.2,avgDur:"17:11",impressions:1200},
+  {idx:8,type:"Presentation",title:"Jay Parsons: 2026 Rental Housing Forecast",date:"Feb 13",views:203,watchHrs:55.6,ctr:2.2,avgDur:"16:25",impressions:2100},
+  {idx:9,type:"Main",title:"2026 Macro Outlook Recap & Reaction: Rates, Growth, and Real Estate",date:"Feb 17",views:265,watchHrs:42.5,ctr:3.6,avgDur:"9:36",impressions:3300},
+  {idx:10,type:"React",title:"Bob & Ben React: Supply Chain Shift",date:"Feb 23",views:46,watchHrs:0.9,ctr:3.3,avgDur:"1:08",impressions:781},
+  {idx:11,type:"Main",title:"Turn Your Network Into a Fund in the Next 30 Days with Tribevest's Seth Bradley",date:"Feb 24",views:173,watchHrs:26.7,ctr:3.2,avgDur:"9:15",impressions:1300},
+  {idx:12,type:"React",title:"Bob & Ben React: The Consumer Isn't Broke",date:"Feb 25",views:28,watchHrs:0.9,ctr:1.6,avgDur:"2:00",impressions:696},
+  {idx:13,type:"React",title:"Bob & Ben React: Why Now Is the Time for Multifamily",date:"Feb 26",views:39,watchHrs:0.8,ctr:2.1,avgDur:"1:15",impressions:1000},
+  {idx:14,type:"React",title:"Bob & Ben React: Reshoring, Labor Shortages & GDP",date:"Feb 27",views:20,watchHrs:0.4,ctr:1.4,avgDur:"1:10",impressions:908},
+  {idx:15,type:"React",title:"Bob & Ben React: Oversupply Creates Multifamily Opportunities",date:"Mar 1",views:30,watchHrs:0.7,ctr:2.3,avgDur:"1:27",impressions:926},
+  {idx:16,type:"React",title:"Ben & Bob React: 3.9% GDP Growth Ahead — Belinda Román",date:"Mar 2",views:35,watchHrs:0.5,ctr:2.0,avgDur:"0:56",impressions:1100},
+  {idx:17,type:"Main",title:"How to Run a Micro Family Office & Manage Your Wealth Like the Ultra-Rich",date:"Mar 3",views:2994,watchHrs:327.2,ctr:3.8,avgDur:"6:33",impressions:48600},
+  {idx:18,type:"Presentation",title:"Are We Talking Ourselves Into a Recession?",date:"Mar 5",views:60,watchHrs:0.8,ctr:2.4,avgDur:"0:46",impressions:1600},
+  {idx:19,type:"Main",title:"Is Private Credit About to Collapse? ($1.7T at Risk)",date:"Mar 10",views:288,watchHrs:61.1,ctr:4.3,avgDur:"12:44",impressions:2200},
+  {idx:20,type:"Main",title:"PPMs That Scare the Sh*t Out of Me",date:"Mar 17",views:252,watchHrs:44.4,ctr:3.8,avgDur:"10:34",impressions:2000},
+  {idx:21,type:"Main",title:"Oil Just Spiked — Are We Headed for a Recession?",date:"Mar 24",views:251,watchHrs:39.6,ctr:2.7,avgDur:"9:28",impressions:3600},
+  {idx:22,type:"Main",title:"What 10,000 High-Net-Worth Investors Are Actually Doing",date:"Mar 30",views:323,watchHrs:78.9,ctr:4.6,avgDur:"14:39",impressions:3200},
+];
+
+// ── Q1 2026 — Podcast per-episode (12 of 23 episodes tracked so far) ─────────
+const Q1_PODCAST=[
+  {idx:0,title:"The Truth About Whole Life Insurance: Experts Debate (Part 1)",date:"Jan 6",plays:1797,audience:1468,consumption:"167h",avg:"32m 24s",avgSec:1944,completion:56,delta:26},
+  {idx:1,title:"Oil Prices & Venezuela: What Investors Need to Know for 2026",date:"Jan 13",plays:1601,audience:1412,consumption:"79h 47m",avg:"15m 36s",avgSec:936,completion:55,delta:24},
+  {idx:2,title:"The Truth About Whole Life Insurance: Experts Debate (Part 2)",date:"Jan 20",plays:1600,audience:1374,consumption:"96h 48m",avg:"18m 36s",avgSec:1116,completion:24,delta:-46},
+  {idx:3,title:"Dr. Peter Linneman on AI Myths, the Future of Multifamily & the Shrinking Federal Workforce",date:"Jan 27",plays:1738,audience:1464,consumption:"132h",avg:"25m 48s",avgSec:1548,completion:36,delta:-19},
+  {idx:4,title:"The Billionaire Tax Battle: CA vs. MO (And How to Pay Less)",date:"Feb 3",plays:1611,audience:1404,consumption:"71h 48m",avg:"11m 24s",avgSec:684,completion:24,delta:-46},
+  {idx:5,title:"Bob Fraser's 2026 Economic Outlook: Investable Megatrends & Market Opportunities",date:"Feb 10",plays:1748,audience:1495,consumption:"108h",avg:"21m 36s",avgSec:1296,completion:47,delta:6},
+  {idx:6,title:"2026 Macro Outlook Recap & Reaction: Rates, Growth, and Real Estate",date:"Feb 17",plays:1775,audience:1500,consumption:"89h 11m",avg:"15m 36s",avgSec:936,completion:30,delta:-33},
+  {idx:7,title:"Turn Your Network Into a Fund in the Next 30 Days with Tribevest's Seth Bradley",date:"Feb 24",plays:1410,audience:1219,consumption:"67h 21m",avg:"22m 12s",avgSec:1332,completion:40,delta:-10,impressions:175},
+  {idx:8,title:"Is Private Credit About to Collapse? ($1.7T at Risk)",date:"Mar 10",plays:1721,audience:1467,consumption:"118h",avg:"21m",avgSec:1260,completion:53,delta:19,impressions:1475},
+  {idx:9,title:"PPMs That Scare the Sh*t Out of Me",date:"Mar 17",plays:1445,audience:1271,consumption:"61h 12m",avg:"20m 24s",avgSec:1224,completion:57,delta:28,impressions:437},
+  {idx:10,title:"Oil Just Spiked — Are We Headed for a Recession?",date:"Mar 24",plays:1334,audience:1202,consumption:"46h 26m",avg:"16m 12s",avgSec:972,completion:64,delta:44,impressions:590},
+  {idx:11,title:"What 10,000 High-Net-Worth Investors Are Actually Doing",date:"Mar 30",plays:1811,audience:1515,consumption:"118h",avg:"27m",avgSec:1620,completion:50,delta:12,impressions:1858},
+];
+// Still to collect: podcast episodes 7, 8, 9, 11, 13–19 (Presentations & React clips)
+
+// ── Shorts — Q1 2026 (34 published, Jan 7 – Mar 31) ──────────────────────────
+const YT_SHORTS=[
+  {idx:0,title:"Life Insurance As a Bond Alternative",date:"Jan 7",views:6,quarter:"Q1 '26"},
+  {idx:1,title:"How Billionaires Shop For Insurance",date:"Jan 8",views:2,quarter:"Q1 '26"},
+  {idx:2,title:"Explaining the Oil Shadow Fleet",date:"Jan 14",views:28,quarter:"Q1 '26"},
+  {idx:3,title:"Why Infinite Banking Isn't Like Owning a Bank",date:"Jan 22",views:1,quarter:"Q1 '26"},
+  {idx:4,title:"The Bad Math Behind Infinite Banking Pitches",date:"Jan 23",views:1,quarter:"Q1 '26"},
+  {idx:5,title:"\"I Promise You Gold Will Crash\"",date:"Jan 30",views:4,quarter:"Q1 '26"},
+  {idx:6,title:"California's Billionaire Wealth Tax — Why It's Different",date:"Feb 5",views:59,quarter:"Q1 '26"},
+  {idx:7,title:"When Fear Is High but the Data Says BUY",date:"Feb 18",views:1,quarter:"Q1 '26"},
+  {idx:8,title:"If You're Not the CEO of Your Wealth, Someone Else Is",date:"Mar 4",views:27,quarter:"Q1 '26"},
+  {idx:9,title:"I Didn't Want Money. I Wanted Time With My Sons.",date:"Mar 5",views:2,quarter:"Q1 '26"},
+  {idx:10,title:"This Millionaire's Favorite Investments for 2026",date:"Mar 6",views:7,quarter:"Q1 '26"},
+  {idx:11,title:"Financial Education Is Teaching You to Stay Middle Class",date:"Mar 6",views:4,quarter:"Q1 '26"},
+  {idx:12,title:"You Can Start a Family Office With Just $1M?!",date:"Mar 9",views:14,quarter:"Q1 '26"},
+  {idx:13,title:"YOU RAISED HOW MUCH IN 2025?!",date:"Mar 9",views:10,quarter:"Q1 '26"},
+  {idx:14,title:"Private Credit Funds Drop 20% — Investors Can't Exit",date:"Mar 11",views:4,quarter:"Q1 '26"},
+  {idx:15,title:"Why 9% Private Credit Might Be Riskier Than 12%",date:"Mar 12",views:3,quarter:"Q1 '26"},
+  {idx:16,title:"3 Red Flags in Private Credit Funds",date:"Mar 12",views:6,quarter:"Q1 '26"},
+  {idx:17,title:"Is Private Credit COLLAPSING?",date:"Mar 13",views:1,quarter:"Q1 '26"},
+  {idx:18,title:"The Lie About 'Safe' Private Investments",date:"Mar 16",views:2,quarter:"Q1 '26"},
+  {idx:19,title:"They Can Call You an Idiot… and Still Take Your Money",date:"Mar 17",views:1,quarter:"Q1 '26"},
+  {idx:20,title:"Watch out for these investment fees",date:"Mar 18",views:2,quarter:"Q1 '26"},
+  {idx:21,title:"HUGE 🌊 in assisted living coming?",date:"Mar 18",views:2,quarter:"Q1 '26"},
+  {idx:22,title:"The 🔑 to starting your own fund",date:"Mar 19",views:2,quarter:"Q1 '26"},
+  {idx:23,title:"They're Using YOUR Money to Pay Themselves Back",date:"Mar 19",views:1,quarter:"Q1 '26"},
+  {idx:24,title:"Forget Net Worth — $200K Is the Real Freedom Number",date:"Mar 20",views:18,quarter:"Q1 '26"},
+  {idx:25,title:"Investors Were Paying for His Cabo Trips",date:"Mar 20",views:10,quarter:"Q1 '26"},
+  {idx:26,title:"They Paid Investors 18%… But Only Earned 10%",date:"Mar 23",views:3,quarter:"Q1 '26"},
+  {idx:27,title:"You Have $500K to Invest in 2026 — What Would You Do?",date:"Mar 25",views:2,quarter:"Q1 '26"},
+  {idx:28,title:"$120 Oil Is Where Things Break",date:"Mar 26",views:3,quarter:"Q1 '26"},
+  {idx:29,title:"What Happens If Iran Is Taken Off the Board?",date:"Mar 27",views:5,quarter:"Q1 '26"},
+  {idx:30,title:"When Everyone Else Panics, Smart Investors Buy 🏦",date:"Mar 27",views:8,quarter:"Q1 '26"},
+  {idx:31,title:"Everyone Feels Broke… But the Data Says Otherwise",date:"Mar 30",views:42,quarter:"Q1 '26"},
+  {idx:32,title:"America Is the World's Energy Superpower — Most People Don't Know This",date:"Mar 30",views:22,quarter:"Q1 '26"},
+  {idx:33,title:"Got a Million Dollars? Don't Invest It Alone",date:"Mar 31",views:49,quarter:"Q1 '26"},
+];
+// Q2 Shorts not yet collected — add entries here with quarter: "Q2 '26"
 
 const CROSS_MONTHS=["Apr '25","May '25","Jun '25","Jul '25","Aug '25","Sep '25","Oct '25","Nov '25","Dec '25","Jan '26","Feb '26","Mar '26"];
 const appleByMonth=Object.fromEntries(APPLE.map(m=>[m.month,m.plays]));
@@ -157,6 +233,66 @@ const APPLE_TOTAL=APPLE.reduce((a,m)=>a+m.plays,0);
 const APPLE_HOURS=APPLE.reduce((a,m)=>a+m.hours,0);
 const SPOTIFY_TOTAL=SPOTIFY_MONTHLY.reduce((a,m)=>a+m.plays,0);
 const POD_Q2_TOTAL=PODCAST_Q2_MONTHLY.reduce((a,m)=>a+m.plays,0);
+
+// ── Derived YTD / comparison metrics (computed from the arrays above) ───────
+const durToSec=(s)=>{const p=s.split(":").map(Number);return p[0]*60+p[1];};
+const secToDur=(s)=>{const m=Math.floor(s/60),ss=Math.round(s%60);return m+":"+String(ss).padStart(2,"0");};
+
+const Q1_MONTHS=["Jan '26","Feb '26","Mar '26"];
+const Q2_MONTHS=["Apr '26","May '26","Jun '26"];
+const YT_H1_MONTHS=[...Q1_MONTHS,...Q2_MONTHS];
+const YT_H1=YT_MONTHLY.filter(m=>YT_H1_MONTHS.includes(m.month));
+const YTD_YT_VIEWS=YT_H1.reduce((a,m)=>a+m.views,0);
+const YTD_YT_WATCH_HOURS=YT_H1.reduce((a,m)=>a+m.watchHours,0);
+const YTD_YT_SUBS=YT_H1.reduce((a,m)=>a+m.subs,0);
+
+const Q1_YT_WATCH_HOURS=YT_MONTHLY.filter(m=>Q1_MONTHS.includes(m.month)).reduce((a,m)=>a+m.watchHours,0);
+const Q2_YT_WATCH_HOURS=YT_MONTHLY.filter(m=>Q2_MONTHS.includes(m.month)).reduce((a,m)=>a+m.watchHours,0);
+const Q1_YT_SUBS=YT_MONTHLY.filter(m=>Q1_MONTHS.includes(m.month)).reduce((a,m)=>a+m.subs,0);
+const Q2_YT_SUBS=YT_MONTHLY.filter(m=>Q2_MONTHS.includes(m.month)).reduce((a,m)=>a+m.subs,0);
+
+const Q1_APPLE_PLAYS=Q1_MONTHS.reduce((a,m)=>a+(appleByMonth[m]||0),0);
+const Q1_SPOTIFY_PLAYS=Q1_MONTHS.reduce((a,m)=>a+(spotifyByMonth[m]||0),0);
+const Q1_POD_PLAYS=Q1_APPLE_PLAYS+Q1_SPOTIFY_PLAYS;
+const Q1_APPLE_HOURS=APPLE.filter(m=>Q1_MONTHS.includes(m.month)).reduce((a,m)=>a+m.hours,0);
+const YTD_POD_PLAYS=Q1_POD_PLAYS+POD_Q2_TOTAL;
+
+const Q2_POD_CONSUMPTION_HOURS=PODCAST_Q2.reduce((a,e)=>{
+  const m=e.consumption.match(/(\d+)h(?:\s*(\d+)m)?/);
+  if(!m)return a;
+  return a+parseInt(m[1])+(m[2]?parseInt(m[2])/60:0);
+},0);
+const YTD_LISTEN_HOURS_EST=Q1_APPLE_HOURS+Q2_POD_CONSUMPTION_HOURS;
+const YTD_WATCH_TIME_HOURS=YTD_YT_WATCH_HOURS+YTD_LISTEN_HOURS_EST;
+const YTD_TOTAL_VIEWS_LISTENS=YTD_YT_VIEWS+YTD_POD_PLAYS;
+
+const Q1_MAIN=Q1_YT_FLAGSHIP.filter(e=>e.type==="Main");
+const Q1_MAIN_VIEWS=Q1_MAIN.reduce((a,e)=>a+e.views,0);
+const Q2_MAIN_VIEWS=YT_FLAGSHIP_Q2.reduce((a,e)=>a+e.views,0);
+const Q1_MAIN_EPS_COUNT=Q1_MAIN.length;
+const Q2_MAIN_EPS_COUNT=YT_FLAGSHIP_Q2.length;
+const Q1_MAIN_AVG_VIEWS=Q1_MAIN_VIEWS/Q1_MAIN_EPS_COUNT;
+const Q2_MAIN_AVG_VIEWS=Q2_MAIN_VIEWS/Q2_MAIN_EPS_COUNT;
+const Q1_MAIN_CTR_AVG=Q1_MAIN.reduce((a,e)=>a+e.ctr,0)/Q1_MAIN_EPS_COUNT;
+const Q2_MAIN_CTR_AVG=YT_FLAGSHIP_Q2.reduce((a,e)=>a+e.ctr,0)/Q2_MAIN_EPS_COUNT;
+
+const YTD_MAIN_EPS=Q1_MAIN_EPS_COUNT+Q2_MAIN_EPS_COUNT;
+const YTD_MAIN_VIEWS=Q1_MAIN_VIEWS+Q2_MAIN_VIEWS;
+const YTD_MAIN_AVG_VIEWS=YTD_MAIN_VIEWS/YTD_MAIN_EPS;
+const YTD_MAIN_CTR_AVG=(Q1_MAIN.reduce((a,e)=>a+e.ctr,0)+YT_FLAGSHIP_Q2.reduce((a,e)=>a+e.ctr,0))/YTD_MAIN_EPS;
+const YTD_MAIN_DUR_AVG=(Q1_MAIN.reduce((a,e)=>a+durToSec(e.avgDur),0)+YT_FLAGSHIP_Q2.reduce((a,e)=>a+durToSec(e.avgDur),0))/YTD_MAIN_EPS;
+
+const Q1_SHORTS_ALL=YT_SHORTS.filter(s=>s.quarter&&s.quarter.includes("Q1"));
+const Q2_SHORTS_ALL=YT_SHORTS.filter(s=>s.quarter&&s.quarter.includes("Q2"));
+const YTD_SHORTS_VIEWS=[...Q1_SHORTS_ALL,...Q2_SHORTS_ALL].reduce((a,s)=>a+s.views,0);
+const YTD_SHORTS_COUNT=Q1_SHORTS_ALL.length+Q2_SHORTS_ALL.length;
+const YTD_AVG_VIEWS_PER_SHORT=YTD_SHORTS_COUNT?YTD_SHORTS_VIEWS/YTD_SHORTS_COUNT:0;
+
+const Q1_POD_IMPR_EPS=Q1_PODCAST.filter(e=>e.impressions);
+const Q1_AVG_IMPR=Q1_POD_IMPR_EPS.length?Q1_POD_IMPR_EPS.reduce((a,e)=>a+e.impressions,0)/Q1_POD_IMPR_EPS.length:0;
+const Q2_AVG_IMPR=PODCAST_Q2.reduce((a,e)=>a+e.impressions,0)/PODCAST_Q2.length;
+const Q1_AVG_COMPLETION=Q1_PODCAST.reduce((a,e)=>a+e.completion,0)/Q1_PODCAST.length;
+const Q2_AVG_COMPLETION=PODCAST_Q2.reduce((a,e)=>a+e.completion,0)/PODCAST_Q2.length;
 
 function fmt(n){if(n>=1e6)return(n/1e6).toFixed(1)+"M";if(n>=1e3)return(n/1e3).toFixed(1)+"K";return Math.round(n).toLocaleString();}
 
@@ -189,7 +325,7 @@ function YTEpisodeTable({data,maxViews}){
   const thS=col=>({textAlign:"left",padding:"7px 10px",fontSize:10,color:sort.col===col?"#111":"#aaa",textTransform:"uppercase",letterSpacing:"0.05em",cursor:"pointer",userSelect:"none",borderBottom:"0.5px solid #eee",whiteSpace:"nowrap",fontWeight:sort.col===col?600:400});
   const tdS={padding:"8px 10px",fontSize:12,borderBottom:"0.5px solid #f5f5f5",verticalAlign:"middle"};
   const arr=col=>sort.col===col?(sort.dir==="desc"?" ↓":" ↑"):"";
-  return(<div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse",minWidth:540}}><thead><tr><th style={{...thS("title"),minWidth:180}}>Episode</th><th onClick={()=>toggle("date")} style={thS("date")}>Published{arr("date")}</th><th onClick={()=>toggle("views")} style={thS("views")}>Views{arr("views")}</th><th onClick={()=>toggle("watchHrs")} style={thS("watchHrs")}>Watch hrs{arr("watchHrs")}</th><th onClick={()=>toggle("ctr")} style={thS("ctr")}>CTR{arr("ctr")}</th><th style={thS("avgDur")}>Avg duration</th></tr></thead><tbody>{sorted.map((ep,i)=><tr key={i} style={{background:i%2===0?"#fff":"#fafafa"}}><td style={{...tdS,maxWidth:0,minWidth:180}}><span title={ep.title} style={{display:"block",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ep.title}</span></td><td style={{...tdS,color:"#999"}}>{ep.date}</td><td style={tdS}><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:36,height:3,background:"#eee",borderRadius:2}}><div style={{width:`${Math.round((ep.views/maxViews)*100)}%`,height:"100%",background:YT_COLOR,borderRadius:2}}/></div><span style={{fontWeight:500}}>{fmt(ep.views)}</span></div></td><td style={{...tdS,color:"#555"}}>{ep.watchHrs.toFixed(1)}h</td><td style={tdS}><CtrPill ctr={ep.ctr}/></td><td style={{...tdS,color:"#999"}}>{ep.avgDur}</td></tr>)}</tbody></table></div>);
+  return(<div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse",minWidth:540}}><thead><tr><th style={{...thS("title"),minWidth:180}}>Episode</th><th onClick={()=>toggle("date")} style={thS("date")}>Published{arr("date")}</th><th onClick={()=>toggle("views")} style={thS("views")}>Views{arr("views")}</th><th onClick={()=>toggle("watchHrs")} style={thS("watchHrs")}>Watch hrs{arr("watchHrs")}</th><th onClick={()=>toggle("ctr")} style={thS("ctr")}>CTR{arr("ctr")}</th><th style={thS("avgDur")}>Avg duration</th></tr></thead><tbody>{sorted.map((ep,i)=><tr key={i} style={{background:i%2===0?"#fff":"#fafafa"}}><td style={{...tdS,maxWidth:0,minWidth:180}}><div style={{display:"flex",alignItems:"center",gap:6}}>{ep.type&&ep.type!=="Main"&&<span style={{fontSize:8,fontWeight:700,color:"#fff",background:TYPE_BADGE_COLORS[ep.type]||"#999",borderRadius:3,padding:"1px 5px",flexShrink:0,textTransform:"uppercase",letterSpacing:"0.03em"}}>{ep.type}</span>}<span title={ep.title} style={{display:"block",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{ep.title}</span></div></td><td style={{...tdS,color:"#999"}}>{ep.date}</td><td style={tdS}><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:36,height:3,background:"#eee",borderRadius:2}}><div style={{width:`${Math.round((ep.views/maxViews)*100)}%`,height:"100%",background:YT_COLOR,borderRadius:2}}/></div><span style={{fontWeight:500}}>{fmt(ep.views)}</span></div></td><td style={{...tdS,color:"#555"}}>{ep.watchHrs.toFixed(1)}h</td><td style={tdS}><CtrPill ctr={ep.ctr}/></td><td style={{...tdS,color:"#999"}}>{ep.avgDur}</td></tr>)}</tbody></table></div>);
 }
 
 function PodcastEpisodeTable({data}){
@@ -214,30 +350,74 @@ function ShortsTable({data}){
   return(<div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr><th style={{...thS("title"),minWidth:200}}>Short</th><th onClick={()=>toggle("date")} style={thS("date")}>Published{arr("date")}</th><th onClick={()=>toggle("views")} style={thS("views")}>Views{arr("views")}</th><th style={thS("quarter")}>Quarter</th></tr></thead><tbody>{sorted.map((s,i)=><tr key={i} style={{background:i%2===0?"#fff":"#fafafa"}}><td style={{...tdS,maxWidth:0,minWidth:200}}><span title={s.title} style={{display:"block",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.title}</span></td><td style={{...tdS,color:"#999"}}>{s.date}</td><td style={tdS}><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:36,height:3,background:"#eee",borderRadius:2}}><div style={{width:`${Math.round((s.views/maxV)*100)}%`,height:"100%",background:YT_COLOR,borderRadius:2}}/></div><span style={{fontWeight:500}}>{fmt(s.views)}</span></div></td><td style={{...tdS,color:"#999"}}>{s.quarter}</td></tr>)}</tbody></table></div>);
 }
 
-function OverviewTab(){
-  const ytQ2views=YT_MONTHLY.filter(m=>["Apr '26","May '26","Jun '26"].includes(m.month)).reduce((a,m)=>a+m.views,0);
+// ── Tab: YTD Overview ─────────────────────────────────────────────────────
+function YTDOverviewTab(){
+  const pct=(a,b)=>b===0?"—":(((a-b)/b)*100>=0?"+":"")+Math.round(((a-b)/b)*100)+"%";
+  const pc=(a,b)=>a>=b?"#22c55e":"#ef4444";
+  const rows=(items)=>items.map(([label,q1,q2,f])=>(
+    <div key={label} style={{marginBottom:10,paddingBottom:10,...div0}}>
+      <div style={{fontSize:10,color:"#aaa",marginBottom:3}}>{label}</div>
+      <div style={{fontSize:11,color:"#999"}}>Q1 <span style={{color:"#555",fontWeight:600}}>{f(q1)}</span> → Q2 <span style={{color:pc(q2,q1),fontWeight:600}}>{f(q2)}</span></div>
+      <div style={{fontSize:13,fontWeight:700,color:pc(q2,q1),marginTop:2}}>{pct(q2,q1)}</div>
+    </div>
+  ));
   return(<div>
-    <div style={{fontSize:10,color:"#aaa",textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:8}}>All platforms · All time</div>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:16}}>
-      <div style={card()}><div style={{fontSize:10,color:"#aaa",marginBottom:4,textTransform:"uppercase",letterSpacing:"0.05em"}}>YouTube views</div><div style={{fontSize:26,fontWeight:700,color:YT_COLOR}}>291K</div><div style={{fontSize:11,color:"#aaa",marginTop:2}}>15K watch hours · 2,879 subscribers</div></div>
-      <div style={card()}><div style={{fontSize:10,color:"#aaa",marginBottom:4,textTransform:"uppercase",letterSpacing:"0.05em"}}>Apple plays (all time)</div><div style={{fontSize:26,fontWeight:700,color:AP_COLOR}}>361K</div><div style={{fontSize:11,color:"#aaa",marginTop:2}}>11K listeners · 30K hrs · 3.4K followers</div></div>
-      <div style={card()}><div style={{fontSize:10,color:"#aaa",marginBottom:4,textTransform:"uppercase",letterSpacing:"0.05em"}}>Podcast plays (combined)</div><div style={{fontSize:26,fontWeight:700,color:SP_COLOR}}>{fmt(APPLE_TOTAL+SPOTIFY_TOTAL+POD_Q2_TOTAL)}</div><div style={{fontSize:11,color:"#aaa",marginTop:2}}>Spotify + Apple + all platforms</div></div>
+    <div style={{fontSize:11,color:"#aaa",marginBottom:16}}>Jan – Jun 2026 · Year to date</div>
+
+    <div style={sL(YT_COLOR)}>Priority metrics</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:8}}>
+      <MCard label="Views + listens YTD" value={fmt(YTD_TOTAL_VIEWS_LISTENS)} color={YT_COLOR} sub="channel-wide, incl. Shorts"/>
+      <MCard label="Watch time YTD" value={fmt(YTD_WATCH_TIME_HOURS)+"h"} sub="estimate*"/>
+      <MCard label="New subscribers YTD" value={"+"+fmt(YTD_YT_SUBS)}/>
+      <MCard label="Podcast plays YTD" value={fmt(YTD_POD_PLAYS)} color={SP_COLOR}/>
     </div>
-    <div style={{...card(),marginBottom:20}}><div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:16}}>{[["Q2 podcast plays",fmt(POD_Q2_TOTAL),"Apr–Jun 2026"],["Q2 YouTube views",fmt(ytQ2views),"incl. Shorts"],["Avg Q2 completion","47%","vs normal ep."],["Spotify followers","2,282","end of Q2"]].map(([l,v,s])=><div key={l}><div style={{fontSize:10,color:"#aaa",marginBottom:2}}>{l}</div><div style={{fontSize:18,fontWeight:700}}>{v}</div><div style={{fontSize:10,color:"#aaa",marginTop:2}}>{s}</div></div>)}</div></div>
-    <div style={{fontSize:10,color:"#aaa",textTransform:"uppercase",letterSpacing:"0.05em",marginBottom:8}}>Trailing 15 months — monthly trend</div>
-    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
-      {[["YouTube views",YT_COLOR,YT_MONTHLY.map(m=>m.views),Math.max(...YT_MONTHLY.map(m=>m.views)),YT_MONTHLY],["Apple plays (pre-Q2)",AP_COLOR,APPLE.map(m=>m.plays),Math.max(...APPLE.map(m=>m.plays)),APPLE]].map(([label,color,data,maxV,arr])=>(
-        <div key={label} style={{...card(),padding:"14px 16px"}}>
-          <div style={{fontSize:12,fontWeight:500,marginBottom:10,display:"flex",alignItems:"center",gap:6}}><span style={{width:8,height:8,borderRadius:"50%",background:color,display:"inline-block"}}/>{label}</div>
-          <SparkBar data={data} maxVal={maxV} color={color}/>
-          <div style={{display:"flex",gap:3,marginTop:4}}>{arr.map(m=><div key={m.month} style={{flex:1,fontSize:7,color:"#bbb",textAlign:"center"}}>{m.month.replace(" '25","").replace(" '26","")}</div>)}</div>
-        </div>
-      ))}
+    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:8}}>
+      <MCard label="Avg views / episode" value={fmt(YTD_MAIN_AVG_VIEWS)} sub="main show only"/>
+      <MCard label="Avg views / short" value={YTD_AVG_VIEWS_PER_SHORT.toFixed(1)}/>
+      <MCard label="Avg CTR" value={YTD_MAIN_CTR_AVG.toFixed(2)+"%"} sub="main show only"/>
+      <MCard label="Avg view duration" value={secToDur(YTD_MAIN_DUR_AVG)} sub="main show only"/>
     </div>
-    <div style={card()}><div style={{fontSize:12,fontWeight:500,marginBottom:8}}>Key insights</div><div style={{fontSize:13,color:"#555",lineHeight:1.7}}>The show has accumulated <strong>~291K YouTube views</strong>, <strong>~361K Apple plays</strong>, and <strong>~70K Spotify plays</strong> historically. Q2 2026 added {fmt(ytQ2views)} YouTube views (channel-wide incl. Shorts) and {fmt(POD_Q2_TOTAL)} combined podcast plays. Apple represents ~57% of Q2 podcast plays. Top Q2 YouTube CTR was <span style={{color:YT_COLOR,fontWeight:600}}>6.6%</span> on "Why Isn't the Economy Breaking?" — top performer of the quarter.</div></div>
+    <div style={{fontSize:10,color:"#bbb",marginBottom:20}}>*Watch time estimate combines YouTube channel watch hours with Apple (Q1) + tracked episode consumption (Q2) — methodology differs slightly by quarter since platform reporting changed mid-year.</div>
+
+    <div style={sL("#888")}>Quarter-over-quarter comparison</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:20}}>
+      <div style={{...card(),padding:"14px 16px"}}>
+        <div style={{fontSize:12,fontWeight:600,marginBottom:10}}>Audience</div>
+        {rows([
+          ["New subscribers",Q1_YT_SUBS,Q2_YT_SUBS,v=>fmt(v)],
+          ["YT watch hours",Q1_YT_WATCH_HOURS,Q2_YT_WATCH_HOURS,v=>fmt(v)+"h"],
+          ["Podcast plays",Q1_POD_PLAYS,POD_Q2_TOTAL,v=>fmt(v)],
+        ])}
+        <div style={{fontSize:10,color:"#bbb",marginTop:4}}>Spotify followers: 2,213 → 2,282 (+69, Q2) · Apple followers: 3,400 (Mar '26)</div>
+      </div>
+
+      <div style={{...card(),padding:"14px 16px"}}>
+        <div style={{fontSize:12,fontWeight:600,marginBottom:10}}>Content</div>
+        {rows([
+          ["Episodes published (main show)",Q1_MAIN_EPS_COUNT,Q2_MAIN_EPS_COUNT,v=>v],
+          ["Avg views / episode",Q1_MAIN_AVG_VIEWS,Q2_MAIN_AVG_VIEWS,v=>fmt(v)],
+          ["Avg CTR",Q1_MAIN_CTR_AVG,Q2_MAIN_CTR_AVG,v=>v.toFixed(2)+"%"],
+        ])}
+        <div style={{fontSize:10,color:"#bbb",marginTop:4}}>Shorts published: 34 (Q1) vs. 0 logged (Q2 — collection pending). Q1 also includes 4 presentation uploads + 6 "Bob &amp; Ben React" clips not counted here.</div>
+      </div>
+
+      <div style={{...card(),padding:"14px 16px"}}>
+        <div style={{fontSize:12,fontWeight:600,marginBottom:10}}>Discovery</div>
+        {rows([
+          ["Avg podcast impressions / ep",Q1_AVG_IMPR,Q2_AVG_IMPR,v=>fmt(v)],
+          ["Avg completion rate",Q1_AVG_COMPLETION,Q2_AVG_COMPLETION,v=>v.toFixed(1)+"%"],
+        ])}
+        <div style={{fontSize:10,color:"#bbb",marginTop:4}}>*Q1 impressions based on 5 of 12 tracked episodes with discovery data available.</div>
+      </div>
+    </div>
+
+    <div style={{...card(),marginBottom:16}}><div style={{fontSize:12,fontWeight:500,marginBottom:10}}>YouTube views — Jan to Jun '26</div><SimpleBar labels={YT_H1.map(m=>m.month)} values={YT_H1.map(m=>m.views)} color={YT_COLOR} height={140}/></div>
+
+    <div style={card()}><div style={{fontSize:12,fontWeight:500,marginBottom:8}}>YTD summary</div><div style={{fontSize:13,color:"#555",lineHeight:1.8}}>Through the first half of 2026, the show has reached <strong>{fmt(YTD_TOTAL_VIEWS_LISTENS)}</strong> combined views + listens and added <strong>+{YTD_YT_SUBS}</strong> YouTube subscribers. Podcast completion rates improved from <strong>{Q1_AVG_COMPLETION.toFixed(0)}%</strong> in Q1 to <strong>{Q2_AVG_COMPLETION.toFixed(0)}%</strong> in Q2, even as average views per episode declined — a smaller but more engaged audience developing into Q2.</div></div>
   </div>);
 }
 
+// ── Tab: Q2 2026 ─────────────────────────────────────────────────────────────
 function Q2Tab(){
   const Q2m=["Apr '26","May '26","Jun '26"],ytQ2=YT_MONTHLY.filter(m=>Q2m.includes(m.month));
   const ytQ2views=ytQ2.reduce((a,m)=>a+m.views,0),ytQ2watch=ytQ2.reduce((a,m)=>a+m.watchHours,0),ytQ2subs=ytQ2.reduce((a,m)=>a+m.subs,0);
@@ -272,6 +452,7 @@ function Q2Tab(){
   </div>);
 }
 
+// ── Tab: Q1 2026 ─────────────────────────────────────────────────────────────
 function Q1Tab(){
   const Q1=["Jan '26","Feb '26","Mar '26"],Q4=["Oct '25","Nov '25","Dec '25"];
   const ytQ1=Q1.reduce((a,m)=>a+(ytByMonth[m]||0),0),apQ1=Q1.reduce((a,m)=>a+(appleByMonth[m]||0),0),spQ1=Q1.reduce((a,m)=>a+(spotifyByMonth[m]||0),0);
@@ -323,50 +504,56 @@ function Q1Tab(){
     </div>
     <div style={sL(AP_COLOR)}>Podcast — per-episode (Q1)</div>
     <div style={{marginBottom:16}}>{Q1_PODCAST.length>0?<div style={card()}><PodcastEpisodeTable data={Q1_PODCAST}/></div>:<PlaceholderCard message="Add Q1 podcast per-episode data to Q1_PODCAST array"/>}</div>
-    <div style={card()}><div style={{fontSize:12,fontWeight:500,marginBottom:8}}>Q1 summary</div><div style={{fontSize:13,color:"#555",lineHeight:1.8}}>YouTube had a <strong>breakout quarter</strong> — {fmt(ytQ1)} views, <span style={{color:pc(ytQ1,ytQ4),fontWeight:600}}>{pa(ytQ1,ytQ4)} {pct(ytQ1,ytQ4)}</span> vs Q4. Apple plays were <span style={{color:pc(apQ1,apQ4),fontWeight:600}}>{pa(apQ1,apQ4)} {pct(apQ1,apQ4)}</span> vs Q4 at {fmt(apQ1)} total. Spotify grew <span style={{color:pc(spQ1,spQ4),fontWeight:600}}>{pa(spQ1,spQ4)} {pct(spQ1,spQ4)}</span> vs Q4 with {fmt(spQ1)} plays.</div></div>
+    <div style={card()}><div style={{fontSize:12,fontWeight:500,marginBottom:8}}>Q1 summary</div><div style={{fontSize:13,color:"#555",lineHeight:1.8}}>YouTube had a <strong>breakout quarter</strong> — {fmt(ytQ1)} views, <span style={{color:pc(ytQ1,ytQ4),fontWeight:600}}>{pa(ytQ1,ytQ4)} {pct(ytQ1,ytQ4)}</span> vs Q4. Apple plays were <span style={{color:pc(apQ1,apQ4),fontWeight:600}}>{pa(apQ1,apQ4)} {pct(apQ1,apQ4)}</span> vs Q4 at {fmt(apQ1)} total. Spotify grew <span style={{color:pc(spQ1,spQ4),fontWeight:600}}>{pa(spQ1,spQ4)} {pct(spQ1,spQ4)}</span> vs Q4 with {fmt(spQ1)} plays. Of the 23 YouTube uploads this quarter, 13 were main flagship episodes, 4 were guest presentation clips, and 6 were "Bob &amp; Ben React" short-form reaction videos.</div></div>
   </div>);
 }
 
-function YTDTab(){
-  const H1m=["Jan '26","Feb '26","Mar '26","Apr '26","May '26","Jun '26"],Q1m=H1m.slice(0,3),Q2m=H1m.slice(3);
-  const ytH1=YT_MONTHLY.filter(m=>H1m.includes(m.month));
-  const ytH1v=ytH1.reduce((a,m)=>a+m.views,0),ytH1w=ytH1.reduce((a,m)=>a+m.watchHours,0),ytH1s=ytH1.reduce((a,m)=>a+m.subs,0);
-  const ytQ1v=ytH1.filter(m=>Q1m.includes(m.month)).reduce((a,m)=>a+m.views,0);
-  const ytQ2v=ytH1.filter(m=>Q2m.includes(m.month)).reduce((a,m)=>a+m.views,0);
-  const ytQ1s=ytH1.filter(m=>Q1m.includes(m.month)).reduce((a,m)=>a+m.subs,0);
-  const ytQ2s=ytH1.filter(m=>Q2m.includes(m.month)).reduce((a,m)=>a+m.subs,0);
-  const podQ1=Q1m.reduce((a,m)=>a+(appleByMonth[m]||0)+(spotifyByMonth[m]||0),0);
-  const ch=(a,b)=>b===0?0:Math.round(((a-b)/b)*100);
+// ── Tab: Content Performance ─────────────────────────────────────────────────
+function ContentPerformanceTab(){
+  const reindex=(arr,offset)=>arr.map((e,i)=>({...e,idx:offset+i}));
+  const mainQ1=Q1_YT_FLAGSHIP.filter(e=>e.type==="Main");
+  const mainQ2=YT_FLAGSHIP_Q2.map(e=>({...e,type:"Main"}));
+  const mainAll=[...reindex(mainQ1,0),...reindex(mainQ2,100)];
+  const maxMainViews=Math.max(...mainAll.map(e=>e.views));
+
+  const presoQ1=Q1_YT_FLAGSHIP.filter(e=>e.type==="Presentation");
+  const reactQ1=Q1_YT_FLAGSHIP.filter(e=>e.type==="React");
+
+  const shortsQ1=YT_SHORTS.filter(s=>s.quarter&&s.quarter.includes("Q1"));
+  const shortsQ2=YT_SHORTS.filter(s=>s.quarter&&s.quarter.includes("Q2"));
+  const shortsAll=[...reindex(shortsQ1,0),...reindex(shortsQ2,100)];
+  const totalShortViews=shortsAll.reduce((a,s)=>a+s.views,0);
+  const avgShortViews=shortsAll.length?(totalShortViews/shortsAll.length):0;
+
   return(<div>
-    <div style={{fontSize:11,color:"#aaa",marginBottom:16}}>Jan – Jun 2026 · H1 2026</div>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:20}}>
-      <MCard label="YouTube views" value={fmt(ytH1v)} sub="H1 total (incl. Shorts)" color={YT_COLOR}/>
-      <MCard label="Watch hours" value={Math.round(ytH1w)+"h"} sub="H1 total"/>
-      <MCard label="Podcast plays" value={fmt(podQ1+POD_Q2_TOTAL)} sub="H1 estimate"/>
-      <MCard label="New subscribers" value={"+"+ytH1s} sub="H1 total"/>
+    <div style={{fontSize:11,color:"#aaa",marginBottom:16}}>Jan – Jun 2026 · all published YouTube content</div>
+
+    <div style={sL(YT_COLOR)}>Main show — per-episode (Q1 + Q2 combined)</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:16}}>
+      <MCard label="Episodes" value={mainAll.length} color={YT_COLOR}/>
+      <MCard label="Total views" value={fmt(mainAll.reduce((a,e)=>a+e.views,0))}/>
+      <MCard label="Avg views / ep" value={fmt(mainAll.reduce((a,e)=>a+e.views,0)/mainAll.length)}/>
+      <MCard label="Avg CTR" value={(mainAll.reduce((a,e)=>a+e.ctr,0)/mainAll.length).toFixed(2)+"%"}/>
     </div>
-    <div style={{...card(),marginBottom:20}}><div style={{fontSize:12,fontWeight:500,marginBottom:10}}>YouTube views — Jan to Jun '26</div><SimpleBar labels={ytH1.map(m=>m.month)} values={ytH1.map(m=>m.views)} color={YT_COLOR} height={140}/></div>
-    <div style={{...card(),marginBottom:20}}>
-      <div style={{fontSize:12,fontWeight:500,marginBottom:14}}>Q1 vs Q2 comparison</div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:8}}>
-        {[[YT_COLOR,"YouTube views",ytQ1v,ytQ2v],[SP_COLOR,"Podcast plays*",podQ1,POD_Q2_TOTAL],["#111","YT subscribers",ytQ1s,ytQ2s]].map(([color,label,q1,q2])=>{
-          const delta=ch(q2,q1);
-          return(<div key={label} style={{background:"#fff",borderRadius:8,padding:"10px 12px",border:"1px solid #eee"}}><div style={{fontSize:10,color:"#aaa",marginBottom:6,textTransform:"uppercase",letterSpacing:"0.05em"}}>{label}</div><div style={{fontSize:11,color:"#aaa"}}>Q1 <span style={{color:"#555",fontWeight:600}}>{fmt(q1)}</span></div><div style={{fontSize:11,color:"#aaa",marginBottom:6}}>Q2 <span style={{color,fontWeight:600}}>{fmt(q2)}</span></div><div style={{fontSize:18,fontWeight:700,color:delta>=0?"#22c55e":"#ef4444"}}>{delta>=0?"↑":"↓"} {Math.abs(delta)}%</div></div>);
-        })}
-      </div>
-      <div style={{fontSize:11,color:"#bbb"}}>*Q1 podcast = Apple + Spotify separately; Q2 = combined all-platform from Spotify for Podcasters</div>
+    <div style={{...card(),marginBottom:20}}><YTEpisodeTable data={mainAll} maxViews={maxMainViews}/></div>
+
+    <div style={sL("#888")}>Shorts — all published (Q1 + Q2)</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:8,marginBottom:16}}>
+      <MCard label="Shorts published" value={shortsAll.length}/>
+      <MCard label="Total views" value={fmt(totalShortViews)}/>
+      <MCard label="Avg views / short" value={avgShortViews.toFixed(1)}/>
     </div>
-    <div style={sL(YT_COLOR)}>Q2 flagship episodes</div>
-    <div style={{...card(),marginBottom:16}}><YTEpisodeTable data={YT_FLAGSHIP_Q2} maxViews={Math.max(...YT_FLAGSHIP_Q2.map(e=>e.views))}/></div>
-    <div style={sL(YT_COLOR)}>Q1 flagship episodes</div>
-    <div style={{marginBottom:16}}>{Q1_YT_FLAGSHIP.length>0?<div style={card()}><YTEpisodeTable data={Q1_YT_FLAGSHIP} maxViews={Math.max(...Q1_YT_FLAGSHIP.map(e=>e.views))}/></div>:<PlaceholderCard message="Q1 per-episode data coming — add to Q1_YT_FLAGSHIP array"/>}</div>
-    <div style={sL(SP_COLOR)}>Q2 podcast episodes</div>
-    <div style={{...card(),marginBottom:16}}><PodcastEpisodeTable data={PODCAST_Q2}/></div>
-    <div style={sL(SP_COLOR)}>Q1 podcast episodes</div>
-    <div>{Q1_PODCAST.length>0?<div style={card()}><PodcastEpisodeTable data={Q1_PODCAST}/></div>:<PlaceholderCard message="Q1 per-episode data coming — add to Q1_PODCAST array"/>}</div>
+    <div style={{...card(),marginBottom:20}}>{shortsAll.length>0?<ShortsTable data={shortsAll}/>:<PlaceholderCard message="No Shorts logged yet"/>}</div>
+
+    <div style={sL("#f59e0b")}>Presentations & specials — Q1 2026</div>
+    <div style={{marginBottom:20}}>{presoQ1.length>0?<div style={card()}><YTEpisodeTable data={presoQ1} maxViews={Math.max(...presoQ1.map(e=>e.views))}/></div>:<PlaceholderCard message="No presentations logged"/>}</div>
+
+    <div style={sL("#64748b")}>Bob & Ben React clips — Q1 2026</div>
+    <div>{reactQ1.length>0?<div style={card()}><YTEpisodeTable data={reactQ1} maxViews={Math.max(...reactQ1.map(e=>e.views))}/></div>:<PlaceholderCard message="No React clips logged"/>}</div>
   </div>);
 }
 
+// ── Tab: YouTube (platform) ───────────────────────────────────────────────
 function YouTubeTab(){
   const [ytMetric,setYtMetric]=useState("views");
   const q2S=YT_SHORTS.filter(s=>s.quarter&&s.quarter.includes("Q2"));
@@ -406,6 +593,7 @@ function YouTubeTab(){
   </div>);
 }
 
+// ── Tab: Podcast (platform) ────────────────────────────────────────────────
 function PodcastTab(){
   const allPod=[...APPLE.map(m=>({month:m.month,plays:m.plays})),...PODCAST_Q2_MONTHLY.map(m=>({month:m.month,plays:m.plays}))];
   return(<div>
@@ -434,66 +622,26 @@ function PodcastTab(){
   </div>);
 }
 
-function CrossTab(){
-  const [crossMetric,setCrossMetric]=useState("combined");
-  const overlapYT=CROSS_MONTHS.reduce((a,m)=>a+(ytByMonth[m]||0),0);
-  const overlapApple=CROSS_MONTHS.reduce((a,m)=>a+(appleByMonth[m]||0),0);
-  const overlapSpot=CROSS_MONTHS.reduce((a,m)=>a+(spotifyByMonth[m]||0),0);
-  const overlapTotal=overlapYT+overlapApple+overlapSpot;
-  const Q4=["Oct '25","Nov '25","Dec '25"],Q1=["Jan '26","Feb '26","Mar '26"];
-  const sum=(ms,map)=>ms.reduce((a,m)=>a+(map[m]||0),0);
-  const pct=(a,b)=>b===0?0:Math.round(((a-b)/b)*100);
-  return(<div>
-    <div style={{fontSize:11,color:"#aaa",marginBottom:12}}>Apr '25–Mar '26 window · separate platform tracking era</div>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:20}}>
-      <MCard label="Total reach" value={fmt(overlapTotal)} sub="Apr '25–Mar '26"/>
-      <MCard label="YouTube" value={fmt(overlapYT)} color={YT_COLOR} sub={Math.round(overlapYT/overlapTotal*100)+"%"}/>
-      <MCard label="Apple" value={fmt(overlapApple)} color={AP_COLOR} sub={Math.round(overlapApple/overlapTotal*100)+"%"}/>
-      <MCard label="Spotify" value={fmt(overlapSpot)} color={SP_COLOR} sub={Math.round(overlapSpot/overlapTotal*100)+"%"}/>
-    </div>
-    <div style={{...card(),marginBottom:16}}>
-      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
-        <div style={{fontSize:12,fontWeight:500}}>Monthly plays/views by platform</div>
-        <div style={{display:"flex",gap:4,flexWrap:"wrap"}}>{[["combined","Stacked"],["youtube","YT"],["apple","Apple"],["spotify","Spotify"]].map(([k,l])=><button key={k} onClick={()=>setCrossMetric(k)} style={{padding:"4px 8px",fontSize:10,borderRadius:4,border:"1px solid #ddd",background:crossMetric===k?"#111":"none",color:crossMetric===k?"#fff":"#666",cursor:"pointer"}}>{l}</button>)}</div>
-      </div>
-      {crossMetric==="combined"&&<><div style={{display:"flex",gap:12,marginBottom:8,fontSize:11}}>{[["YouTube",YT_COLOR],["Apple",AP_COLOR],["Spotify",SP_COLOR]].map(([l,c])=><span key={l} style={{display:"flex",alignItems:"center",gap:4}}><span style={{width:10,height:10,borderRadius:2,background:c,display:"inline-block"}}/><span style={{color:"#555"}}>{l}</span></span>)}</div><StackedBar labels={CROSS_MONTHS} datasets={[{data:CROSS_MONTHS.map(m=>ytByMonth[m]||0),color:YT_COLOR},{data:CROSS_MONTHS.map(m=>appleByMonth[m]||0),color:AP_COLOR},{data:CROSS_MONTHS.map(m=>spotifyByMonth[m]||0),color:SP_COLOR}]} height={220}/></>}
-      {crossMetric==="youtube"&&<SimpleBar labels={CROSS_MONTHS} values={CROSS_MONTHS.map(m=>ytByMonth[m]||0)} color={YT_COLOR} height={220}/>}
-      {crossMetric==="apple"&&<SimpleBar labels={CROSS_MONTHS} values={CROSS_MONTHS.map(m=>appleByMonth[m]||0)} color={AP_COLOR} height={220}/>}
-      {crossMetric==="spotify"&&<SimpleBar labels={CROSS_MONTHS} values={CROSS_MONTHS.map(m=>spotifyByMonth[m]||0)} color={SP_COLOR} height={220}/>}
-    </div>
-    <div style={{...card(),marginBottom:16}}>
-      <div style={{fontSize:12,fontWeight:500,marginBottom:14}}>Q4 2025 vs Q1 2026 growth</div>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
-        {[[YT_COLOR,"YouTube Views",sum(Q4,ytByMonth),sum(Q1,ytByMonth)],[AP_COLOR,"Apple Plays",sum(Q4,appleByMonth),sum(Q1,appleByMonth)],[SP_COLOR,"Spotify Plays",sum(Q4,spotifyByMonth),sum(Q1,spotifyByMonth)],["#111","Total Reach",sum(Q4,ytByMonth)+sum(Q4,appleByMonth)+sum(Q4,spotifyByMonth),sum(Q1,ytByMonth)+sum(Q1,appleByMonth)+sum(Q1,spotifyByMonth)]].map(([color,label,q4,q1])=>{
-          const ch=pct(q1,q4);
-          return(<div key={label} style={{background:"#fff",borderRadius:8,padding:"10px 12px",border:"1px solid #eee"}}><div style={{fontSize:10,color:"#aaa",marginBottom:6,textTransform:"uppercase",letterSpacing:"0.05em"}}>{label}</div><div style={{fontSize:11,color:"#aaa"}}>Q4 <span style={{color:"#555",fontWeight:600}}>{fmt(q4)}</span></div><div style={{fontSize:11,color:"#aaa",marginBottom:6}}>Q1 <span style={{color,fontWeight:600}}>{fmt(q1)}</span></div><div style={{fontSize:18,fontWeight:700,color:ch>=0?"#22c55e":"#ef4444"}}>{ch>=0?"↑":"↓"} {Math.abs(ch)}%</div></div>);
-        })}
-      </div>
-    </div>
-  </div>);
-}
-
-const TABS=["Overview","Q2 2026","Q1 2026","Year to Date","YouTube","Podcast","Cross-Platform"];
+const TABS=["YTD Overview","Q1 2026","Q2 2026","Content Performance","YouTube","Podcast"];
 const PC={YouTube:YT_COLOR,"Apple Podcasts":AP_COLOR,Spotify:SP_COLOR};
 
 export default function App(){
-  const [tab,setTab]=useState("Overview");
+  const [tab,setTab]=useState("YTD Overview");
   return(
     <div style={{padding:"1.25rem 1rem",maxWidth:780,margin:"0 auto",fontFamily:"system-ui,sans-serif",color:"#111"}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20}}>
-        <div><h2 style={{margin:"0 0 3px",fontSize:20,fontWeight:600}}>Invest Like a Billionaire</h2><p style={{margin:0,fontSize:12,color:"#999"}}>Analytics Dashboard · Updated Jun 2026</p></div>
+        <div><h2 style={{margin:"0 0 3px",fontSize:20,fontWeight:600}}>Invest Like a Billionaire</h2><p style={{margin:0,fontSize:12,color:"#999"}}>Analytics Dashboard · Updated Jul 2026</p></div>
         <div style={{display:"flex",gap:12}}>{Object.entries(PC).map(([name,color])=><div key={name} style={{display:"flex",alignItems:"center",gap:5,fontSize:11}}><div style={{width:8,height:8,borderRadius:"50%",background:color}}/><span style={{color:"#666"}}>{name}</span></div>)}</div>
       </div>
       <div style={{display:"flex",gap:2,marginBottom:20,borderBottom:"0.5px solid #e5e5e5",overflowX:"auto"}}>
         {TABS.map(t=><button key={t} onClick={()=>setTab(t)} style={{padding:"8px 14px",fontSize:12,border:"none",background:"none",cursor:"pointer",whiteSpace:"nowrap",color:tab===t?"#111":"#888",fontWeight:tab===t?600:400,borderBottom:tab===t?"2px solid #111":"2px solid transparent",marginBottom:-1}}>{t}</button>)}
       </div>
-      {tab==="Overview"&&<OverviewTab/>}
-      {tab==="Q2 2026"&&<Q2Tab/>}
+      {tab==="YTD Overview"&&<YTDOverviewTab/>}
       {tab==="Q1 2026"&&<Q1Tab/>}
-      {tab==="Year to Date"&&<YTDTab/>}
+      {tab==="Q2 2026"&&<Q2Tab/>}
+      {tab==="Content Performance"&&<ContentPerformanceTab/>}
       {tab==="YouTube"&&<YouTubeTab/>}
       {tab==="Podcast"&&<PodcastTab/>}
-      {tab==="Cross-Platform"&&<CrossTab/>}
     </div>
   );
 }
