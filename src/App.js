@@ -585,6 +585,15 @@ function GrowthTab(){
   return(<div>
     <div style={{fontSize:11,color:"#aaa",marginBottom:16}}>Jan – Sep 2026 compared with the three quarters before · Q3 '26 runs through Sep 27 (YouTube) and Sep 28 (podcast)</div>
 
+    <div style={sL("#666")}>2026 so far (Jan – Sep)</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(130px,1fr))",gap:8,marginBottom:20}}>
+      <MCard label="YouTube views" value={fmt(ytd("Channel total","views"))} color={YT_COLOR}/>
+      <MCard label="Watch hours" value={ytd("Channel total","hours").toLocaleString()+"h"}/>
+      <MCard label="New subscribers" value={"+"+ytd("Channel total","subs")} sub="3,072 total"/>
+      <MCard label="Shorts published" value={50+100+YT_SHORTS_Q3.length}/>
+      <MCard label="Podcast plays" value={fmt(POD_QTR.slice(START_IDX).reduce((s,x)=>s+x.plays,0))} color={SP_COLOR} sub="all platforms"/>
+    </div>
+    <div style={sL("#666")}>Compared with before</div>
     <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:8,marginBottom:20}}>
       <MCard label="YouTube views, Q3 vs Q3 '25" value={ytMult+"×"} sub={`${fmt(q3ly.views)} → ${fmt(q3.views)}`} color={YT_COLOR}/>
       <MCard label="YouTube views per quarter" value={fmt(ytAvgA)} sub={`avg since Jan, vs ${fmt(ytAvgB)} before`} color={YT_COLOR}/>
@@ -997,7 +1006,7 @@ function PodcastTab(){
   </div>);
 }
  
-const TABS=["Growth Since Jan '26","Q3 2026","H1 2026 Overview","Q1 2026","Q2 2026","Content Performance","YouTube","Podcast"];
+const TABS=["Growth Since Jan '26","Q3 2026","Q1 2026","Q2 2026","Content Performance","YouTube","Podcast"];
 const PC={YouTube:YT_COLOR,"Apple Podcasts":AP_COLOR,Spotify:SP_COLOR};
  
 export default function App(){
@@ -1013,7 +1022,6 @@ export default function App(){
       </div>
       {tab==="Growth Since Jan '26"&&<GrowthTab/>}
       {tab==="Q3 2026"&&<Q3Tab/>}
-      {tab==="H1 2026 Overview"&&<YTDOverviewTab/>}
       {tab==="Q1 2026"&&<Q1Tab/>}
       {tab==="Q2 2026"&&<Q2Tab/>}
       {tab==="Content Performance"&&<ContentPerformanceTab/>}
