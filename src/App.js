@@ -45,9 +45,9 @@ const APPLE=[
   {month:"Oct '25",plays:6000,listeners:762,hours:568,followers:3200,engaged:615},
   {month:"Nov '25",plays:6600,listeners:788,hours:630,followers:3200,engaged:634},
   {month:"Dec '25",plays:5600,listeners:714,hours:568,followers:3300,engaged:555},
-  {month:"Jan '26",plays:7600,listeners:765,hours:835,followers:3300,engaged:610},
-  {month:"Feb '26",plays:6200,listeners:717,hours:669,followers:3300,engaged:541},
-  {month:"Mar '26",plays:6900,listeners:775,hours:684,followers:3400,engaged:634},
+  {month:"Jan '26",plays:8700,listeners:722,hours:711,followers:2100,engaged:498},
+  {month:"Feb '26",plays:10300,listeners:713,hours:836,followers:2200,engaged:566},
+  {month:"Mar '26",plays:10000,listeners:738,hours:818,followers:2300,engaged:573},
 ];
  
 const APPLE_TOP=[
@@ -454,6 +454,250 @@ function ShortsTable({data}){
   return(<div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse"}}><thead><tr><th style={{...thS("title"),minWidth:200}}>Short</th><th onClick={()=>toggle("date")} style={thS("date")}>Published{arr("date")}</th><th onClick={()=>toggle("views")} style={thS("views")}>Views{arr("views")}</th><th style={thS("quarter")}>Quarter</th></tr></thead><tbody>{sorted.map((s,i)=><tr key={i} style={{background:i%2===0?"#fff":"#fafafa"}}><td style={{...tdS,maxWidth:0,minWidth:200}}><span title={s.title} style={{display:"block",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.title}</span></td><td style={{...tdS,color:"#999"}}>{s.date}</td><td style={tdS}><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:36,height:3,background:"#eee",borderRadius:2}}><div style={{width:`${Math.round((s.views/maxV)*100)}%`,height:"100%",background:YT_COLOR,borderRadius:2}}/></div><span style={{fontWeight:500}}>{fmt(s.views)}</span></div></td><td style={{...tdS,color:"#999"}}>{s.quarter}</td></tr>)}</tbody></table></div>);
 }
  
+
+// ════════════════════════════════════════════════════════════════════════════
+// Q3 2026 + GROWTH DATA (added Sep 28, 2026)
+// Sources: YouTube Studio table exports (per quarter), Spotify for Creators
+// exports & overview, Apple Podcasts Connect monthly overview.
+// YouTube Q3 = Jul 1 – Sep 27. Podcast Q3 = Jul 1 – Sep 28 unless noted.
+// ════════════════════════════════════════════════════════════════════════════
+
+// YouTube channel totals by quarter. 2025 quarters are sums of YT_MONTHLY;
+// 2026 quarters come from YouTube Studio exports for each full quarter.
+const YT_QTR=[
+  {q:"Q2 '25",views:7364,hours:782,subs:184},
+  {q:"Q3 '25",views:6953,hours:854,subs:193},
+  {q:"Q4 '25",views:7930,hours:1003,subs:138},
+  {q:"Q1 '26",views:43231,hours:2333,subs:250},
+  {q:"Q2 '26",views:60165,hours:1795,subs:221},
+  {q:"Q3 '26",views:65152,hours:1572,subs:188},
+];
+
+// Podcast by quarter. plays + audience = all platforms (Spotify for Creators).
+// sp* fields = Spotify app only. spNew = approx. new Spotify listeners.
+const POD_QTR=[
+  {q:"Q2 '25",plays:16859,audience:7926,spPlays:3148,spHours:617,spFollowGain:67,spNew:356,spReturnPct:78},
+  {q:"Q3 '25",plays:22189,audience:9033,spPlays:4551,spHours:844,spFollowGain:89,spNew:369,spReturnPct:85},
+  {q:"Q4 '25",plays:19623,audience:8045,spPlays:4151,spHours:807,spFollowGain:89,spNew:321,spReturnPct:85},
+  {q:"Q1 '26",plays:23962,audience:10120,spPlays:6827,spHours:1323,spFollowGain:86,spNew:990,spReturnPct:75},
+  {q:"Q2 '26",plays:23532,audience:10429,spPlays:5869,spHours:1334,spFollowGain:70,spNew:542,spReturnPct:85},
+  {q:"Q3 '26",plays:20425,audience:9416,spPlays:4341,spHours:1224,spFollowGain:39,spNew:315,spReturnPct:89},
+];
+const PODCAST_Q3_MONTHLY=[{month:"Jul '26",plays:7153},{month:"Aug '26",plays:6915},{month:"Sep '26",plays:6295}];
+const SP_IMPR_Q3=[{month:"Jul '26",impr:17693},{month:"Aug '26",impr:16950},{month:"Sep '26",impr:13737}];
+const SP_FOLLOWERS_Q3={start:2281,end:2320};
+
+// Apple Podcasts Connect, monthly (screenshots Sep 28, 2026). Sep = through Sep 28.
+const APPLE_2026=[
+  {month:"Jan '26",plays:8700,listeners:722,engaged:498,hours:711,followers:2100},
+  {month:"Feb '26",plays:10300,listeners:713,engaged:566,hours:836,followers:2200},
+  {month:"Mar '26",plays:10000,listeners:738,engaged:573,hours:818,followers:2300},
+  {month:"Apr '26",plays:10000,listeners:667,engaged:485,hours:750,followers:2300},
+  {month:"May '26",plays:7700,listeners:628,engaged:434,hours:679,followers:2300},
+  {month:"Jun '26",plays:6500,listeners:615,engaged:453,hours:610,followers:2400},
+  {month:"Jul '26",plays:8000,listeners:693,engaged:527,hours:756,followers:2400},
+  {month:"Aug '26",plays:9100,listeners:760,engaged:567,hours:817,followers:2500},
+  {month:"Sep '26",plays:6400,listeners:668,engaged:493,hours:572,followers:2600},
+];
+
+// Spotify for Creators audience, % of listeners (2025 full year vs 2026 YTD)
+const AUDIENCE_AGE=[
+  {age:"Under 28",y25:7.0,y26:5.7},{age:"28–34",y25:13.2,y26:15.6},{age:"35–44",y25:33.1,y26:29.3},
+  {age:"45–59",y25:33.6,y26:37.9},{age:"60+",y25:13.1,y26:11.4},
+];
+const AUDIENCE_GENDER={y25:{male:86.4,female:10.7},y26:{male:82.3,female:14.4}};
+const LISTENING_APPS=[{app:"Apple Podcasts",pct:56.7},{app:"Spotify",pct:21.0},{app:"Other",pct:11.5},{app:"Web browser",pct:5.0},{app:"Overcast",pct:3.7},{app:"Podcast Addict",pct:2.1}];
+
+const BUCKET_ORDER=["ILAB main show","Out of the Box","Outlook & special","Shorts & clips","Pre-2026 catalog"];
+const BUCKET_COLORS={"ILAB main show":YT_COLOR,"Out of the Box":OOTB_COLOR,"Outlook & special":"#f59e0b","Shorts & clips":"#94a3b8","Pre-2026 catalog":"#d4d4d8"};
+const START_IDX=3; // first quarter with Katy producing (Q1 '26)
+
+const YT_FLAGSHIP_Q3=[{"idx": 0, "title": "Your Index Fund Is Becoming a Tech Fund. Here's Why That Matters.", "date": "Jul 7", "views": 204, "watchHrs": 38.2, "ctr": 4.73, "avgDur": "11:24"}, {"idx": 1, "title": "Why Now Is the Time for Private Alternatives", "date": "Jul 14", "views": 116, "watchHrs": 27.8, "ctr": 2.81, "avgDur": "14:21"}, {"idx": 2, "title": "Why America Can't Afford to Lose This Economic War", "date": "Jul 21", "views": 152, "watchHrs": 33.4, "ctr": 4.14, "avgDur": "13:10"}, {"idx": 3, "title": "The New 60/40 Portfolio Wealthy Investors Actually Use", "date": "Jul 28", "views": 212, "watchHrs": 29.5, "ctr": 3.63, "avgDur": "8:23"}, {"idx": 4, "title": "How We'd Invest $5 Million Today (Our Real Portfolio Allocations)", "date": "Aug 4", "views": 402, "watchHrs": 92.5, "ctr": 6.54, "avgDur": "14:07"}, {"idx": 5, "title": "The Great Gold Debate with David Morgan", "date": "Aug 11", "views": 513, "watchHrs": 80.6, "ctr": 2.54, "avgDur": "10:37"}, {"idx": 6, "title": "Private Markets Are Going Mainstream. Is That a Good Thing?", "date": "Aug 18", "views": 273, "watchHrs": 46.0, "ctr": 3.52, "avgDur": "10:36"}, {"idx": 7, "title": "Are we already at war with China?", "date": "Aug 25", "views": 212, "watchHrs": 27.1, "ctr": 4.06, "avgDur": "11:26"}, {"idx": 8, "title": "Why RIAs Can’t Ignore Private Alternatives Anymore", "date": "Sep 1", "views": 262, "watchHrs": 20.9, "ctr": 3.11, "avgDur": "9:07"}, {"idx": 9, "title": "Former $10B REIT Manager Shares How to Vet Real Estate Deals", "date": "Sep 8", "views": 439, "watchHrs": 42.3, "ctr": 3.48, "avgDur": "12:46"}, {"idx": 10, "title": "The State of Multifamily: Why We’re Buying Now", "date": "Sep 15", "views": 1633, "watchHrs": 75.9, "ctr": 3.89, "avgDur": "9:32"}, {"idx": 11, "title": "High Earner, Not Rich Yet? Here’s What You’re Missing", "date": "Sep 22", "views": 604, "watchHrs": 41.8, "ctr": 5.73, "avgDur": "9:35"}];
+const YT_OOTB_Q3=[{"idx": 0, "title": "How to Vet an Operator Before You Invest", "date": "Jul 16", "views": 182, "watchHrs": 13.1, "ctr": 2.26, "avgDur": "4:18"}, {"idx": 1, "title": "Private Credit: Why Every Cash Flow Investor Should Own It", "date": "Aug 6", "views": 286, "watchHrs": 16.3, "ctr": 4.21, "avgDur": "3:27"}, {"idx": 2, "title": "5 Rules to Follow When Investing in Real Estate", "date": "Aug 28", "views": 281, "watchHrs": 9.0, "ctr": 2.64, "avgDur": "3:32"}, {"idx": 3, "title": "7 Questions for Your Financial Advisor", "date": "Sep 17", "views": 262, "watchHrs": 6.2, "ctr": 3.36, "avgDur": "3:00"}];
+const YT_SHORTS_Q3=[{"idx": 0, "title": "More for Less: Why AI Could Cool Inflation", "date": "Jul 1", "views": 155, "quarter": "Q3 '26"}, {"idx": 1, "title": "Everyone's Buying. That's the Problem", "date": "Jul 1", "views": 287, "quarter": "Q3 '26"}, {"idx": 2, "title": "What If Your Stocks Stopped Going Up?", "date": "Jul 2", "views": 718, "quarter": "Q3 '26"}, {"idx": 3, "title": "Why This Fed Chair Is Different", "date": "Jul 3", "views": 559, "quarter": "Q3 '26"}, {"idx": 4, "title": "Warsh Just Changed the Game", "date": "Jul 6", "views": 184, "quarter": "Q3 '26"}, {"idx": 5, "title": "Why Asset Prices Exploded", "date": "Jul 7", "views": 544, "quarter": "Q3 '26"}, {"idx": 6, "title": "Great Companies Can Be Terrible Investments", "date": "Jul 7", "views": 171, "quarter": "Q3 '26"}, {"idx": 7, "title": "The Stock Market Explained in 60 Seconds", "date": "Jul 8", "views": 717, "quarter": "Q3 '26"}, {"idx": 8, "title": "120x Earnings. What Could Go Wrong?", "date": "Jul 8", "views": 774, "quarter": "Q3 '26"}, {"idx": 9, "title": "You Can't Pick the AI Winners", "date": "Jul 9", "views": 758, "quarter": "Q3 '26"}, {"idx": 10, "title": "The Secret to Building Wealth Isn't Exciting", "date": "Jul 9", "views": 514, "quarter": "Q3 '26"}, {"idx": 11, "title": "Overinvested in Stocks?", "date": "Jul 10", "views": 597, "quarter": "Q3 '26"}, {"idx": 12, "title": "We've Seen This Before", "date": "Jul 12", "views": 462, "quarter": "Q3 '26"}, {"idx": 13, "title": "The Rich Play a Different Game", "date": "Jul 13", "views": 373, "quarter": "Q3 '26"}, {"idx": 14, "title": "Why Billionaires Invest Privately", "date": "Jul 14", "views": 181, "quarter": "Q3 '26"}, {"idx": 15, "title": "Take the Win. Don't Chase the Top.", "date": "Jul 15", "views": 757, "quarter": "Q3 '26"}, {"idx": 16, "title": "The 4 Best Investments Right Now", "date": "Jul 15", "views": 305, "quarter": "Q3 '26"}, {"idx": 17, "title": "The Best Investment Depends on Your Needs", "date": "Jul 16", "views": 68, "quarter": "Q3 '26"}, {"idx": 18, "title": "The Best Investors Start With NO", "date": "Jul 16", "views": 143, "quarter": "Q3 '26"}, {"idx": 19, "title": "Why Operators Matter More in Private Markets", "date": "Jul 17", "views": 346, "quarter": "Q3 '26"}, {"idx": 20, "title": "Don't Build the Wrong Portfolio", "date": "Jul 17", "views": 677, "quarter": "Q3 '26"}, {"idx": 21, "title": "The Stock Market Can't Do This Forever", "date": "Jul 18", "views": 144, "quarter": "Q3 '26"}, {"idx": 22, "title": "The Goldilocks Rule for Investing", "date": "Jul 19", "views": 233, "quarter": "Q3 '26"}, {"idx": 23, "title": "You're Overestimating How Much Liquidity You Need", "date": "Jul 20", "views": 135, "quarter": "Q3 '26"}, {"idx": 24, "title": "The Best Real Estate Deals Aren't in REITs", "date": "Jul 21", "views": 368, "quarter": "Q3 '26"}, {"idx": 25, "title": "The Biggest Problem With Tariffs", "date": "Jul 22", "views": 848, "quarter": "Q3 '26"}, {"idx": 26, "title": "One Drone Could Stop AI", "date": "Jul 22", "views": 1051, "quarter": "Q3 '26"}, {"idx": 27, "title": "China Doesn't Care About Profit", "date": "Jul 23", "views": 707, "quarter": "Q3 '26"}, {"idx": 28, "title": "The Case for Tariffs (From a Free Market Investor)", "date": "Jul 23", "views": 72, "quarter": "Q3 '26"}, {"idx": 29, "title": "The Most Valuable Skill You'll Ever Learn", "date": "Jul 24", "views": 699, "quarter": "Q3 '26"}, {"idx": 30, "title": "The Economic Mistake America Can't Afford to Repeat", "date": "Jul 26", "views": 802, "quarter": "Q3 '26"}, {"idx": 31, "title": "Why Samsung Became a Global Giant", "date": "Jul 27", "views": 92, "quarter": "Q3 '26"}, {"idx": 32, "title": "The New 60/40 the Wealthy Actually Use", "date": "Jul 29", "views": 309, "quarter": "Q3 '26"}, {"idx": 33, "title": "You've Been Lied To About IRA", "date": "Jul 29", "views": 506, "quarter": "Q3 '26"}, {"idx": 34, "title": "You're Paying 1% for Nothing", "date": "Jul 30", "views": 223, "quarter": "Q3 '26"}, {"idx": 35, "title": "My Roth IRA Made Me Financially Free", "date": "Jul 30", "views": 262, "quarter": "Q3 '26"}, {"idx": 36, "title": "Your IRA Is Built for Alternative Investments", "date": "Jul 31", "views": 185, "quarter": "Q3 '26"}, {"idx": 37, "title": "How Investors Are 10X-ing Their Roth IRAs", "date": "Jul 31", "views": 281, "quarter": "Q3 '26"}, {"idx": 38, "title": "The Retirement System Is Rigged in Your Favor", "date": "Aug 2", "views": 505, "quarter": "Q3 '26"}, {"idx": 39, "title": "Young Investors Are Changing the Game", "date": "Aug 3", "views": 15, "quarter": "Q3 '26"}, {"idx": 40, "title": "Nobody Taught Me This in Tax Law", "date": "Aug 3", "views": 29, "quarter": "Q3 '26"}, {"idx": 41, "title": "One Bad Investment Shouldn't Ruin Your Life", "date": "Aug 5", "views": 44, "quarter": "Q3 '26"}, {"idx": 42, "title": "Your Emotions Are Costing You Money", "date": "Aug 5", "views": 674, "quarter": "Q3 '26"}, {"idx": 43, "title": "Just Got Rich? Don't Invest It Yet", "date": "Aug 6", "views": 26, "quarter": "Q3 '26"}, {"idx": 44, "title": "Private Credit Explained in 60 Seconds", "date": "Aug 6", "views": 750, "quarter": "Q3 '26"}, {"idx": 45, "title": "The Closest Thing to a Free Lunch in Investing", "date": "Aug 6", "views": 121, "quarter": "Q3 '26"}, {"idx": 46, "title": "When Private Credit Makes Sense", "date": "Aug 7", "views": 447, "quarter": "Q3 '26"}, {"idx": 47, "title": "AI Needs More Than Chips. It Needs This.", "date": "Aug 7", "views": 273, "quarter": "Q3 '26"}, {"idx": 48, "title": "The Surprising Advantage of Illiquid Investments", "date": "Aug 8", "views": 96, "quarter": "Q3 '26"}, {"idx": 49, "title": "I'm 0% Invested in Stocks  Here's Why", "date": "Aug 9", "views": 413, "quarter": "Q3 '26"}, {"idx": 50, "title": "Stop Taking Investing Advice From These People", "date": "Aug 10", "views": 51, "quarter": "Q3 '26"}, {"idx": 51, "title": "Gold: Investment or Hedge?", "date": "Aug 12", "views": 221, "quarter": "Q3 '26"}, {"idx": 52, "title": "Where Do You Invest When Everything Is Overvalued?", "date": "Aug 12", "views": 395, "quarter": "Q3 '26"}, {"idx": 53, "title": "I Own Gold. Here’s Why I Don’t Invest in It", "date": "Aug 13", "views": 214, "quarter": "Q3 '26"}, {"idx": 54, "title": "90% of the Move Happens in the Final 10%", "date": "Aug 13", "views": 100, "quarter": "Q3 '26"}, {"idx": 55, "title": "The Best Example of How Gold & Silver Preserve Wealth", "date": "Aug 14", "views": 236, "quarter": "Q3 '26"}, {"idx": 56, "title": "Bitcoin Is the New Gold. Or Is It?", "date": "Aug 14", "views": 73, "quarter": "Q3 '26"}, {"idx": 57, "title": "Gold vs  Stocks Over 46 Years", "date": "Aug 15", "views": 1291, "quarter": "Q3 '26"}, {"idx": 58, "title": "The Case for Gold You Can’t See on a Chart", "date": "Aug 16", "views": 208, "quarter": "Q3 '26"}, {"idx": 59, "title": "The 3 Assets Billionaires Trust to Preserve Wealth", "date": "Aug 17", "views": 187, "quarter": "Q3 '26"}, {"idx": 60, "title": "Why Bigger Isn’t Always Better in Alternative Investing", "date": "Aug 19", "views": 35, "quarter": "Q3 '26"}, {"idx": 61, "title": "Blackstone & Vanguard’s New Alts Fund: Bob’s Reaction", "date": "Aug 19", "views": 103, "quarter": "Q3 '26"}, {"idx": 62, "title": "If the Market Crashes, This Blackstone & Vanguard Fund Could Win", "date": "Aug 20", "views": 122, "quarter": "Q3 '26"}, {"idx": 63, "title": "Would We Actually Recommend This Fund?", "date": "Aug 20", "views": 41, "quarter": "Q3 '26"}, {"idx": 64, "title": "The Beginner’s Way Into Private Markets", "date": "Aug 21", "views": 73, "quarter": "Q3 '26"}, {"idx": 65, "title": "Why Correlation Matters More Than You Think", "date": "Aug 21", "views": 1026, "quarter": "Q3 '26"}, {"idx": 66, "title": "Why Public Markets Can Make You Overpay", "date": "Aug 23", "views": 66, "quarter": "Q3 '26"}, {"idx": 67, "title": "When Bigger Isn’t Better for Investors", "date": "Aug 24", "views": 91, "quarter": "Q3 '26"}, {"idx": 68, "title": "China Found a Different Way to Win", "date": "Aug 26", "views": 540, "quarter": "Q3 '26"}, {"idx": 69, "title": "I’m Not Touching AI Stocks", "date": "Aug 26", "views": 566, "quarter": "Q3 '26"}, {"idx": 70, "title": "China’s Playbook to Wipe Out an Entire Industry", "date": "Aug 27", "views": 204, "quarter": "Q3 '26"}, {"idx": 71, "title": "The Free Market Is Vulnerable", "date": "Aug 27", "views": 90, "quarter": "Q3 '26"}, {"idx": 72, "title": "The #1 Rule of Real Estate Leverage", "date": "Aug 28", "views": 207, "quarter": "Q3 '26"}, {"idx": 73, "title": "Why Private Real Estate Beats REITs", "date": "Aug 29", "views": 85, "quarter": "Q3 '26"}, {"idx": 74, "title": "How America Lost Its Rare Earth Supply Chain", "date": "Aug 30", "views": 8946, "quarter": "Q3 '26"}, {"idx": 75, "title": "China Has More Leverage Than You Think", "date": "Aug 31", "views": 3, "quarter": "Q3 '26"}, {"idx": 76, "title": "There’s a Limit to China’s Power", "date": "Aug 31", "views": 1195, "quarter": "Q3 '26"}, {"idx": 77, "title": "Advisors: Get Into Privates or Get Left Behind", "date": "Sep 2", "views": 73, "quarter": "Q3 '26"}, {"idx": 78, "title": "The $100M Portfolio Looks Very Different", "date": "Sep 3", "views": 68, "quarter": "Q3 '26"}, {"idx": 79, "title": "I Run Every Deal Through AI", "date": "Sep 3", "views": 99, "quarter": "Q3 '26"}, {"idx": 80, "title": "Investors Want Private Markets", "date": "Sep 4", "views": 35, "quarter": "Q3 '26"}, {"idx": 81, "title": "Big Name. Lower Returns?", "date": "Sep 4", "views": 131, "quarter": "Q3 '26"}, {"idx": 82, "title": "Look for Reasons NOT to Invest", "date": "Sep 6", "views": 986, "quarter": "Q3 '26"}, {"idx": 83, "title": "What Private Markets Do Better", "date": "Sep 7", "views": 93, "quarter": "Q3 '26"}, {"idx": 84, "title": "Just Run", "date": "Sep 9", "views": 250, "quarter": "Q3 '26"}, {"idx": 85, "title": "Don’t Invest for 6 Months", "date": "Sep 9", "views": 31, "quarter": "Q3 '26"}, {"idx": 86, "title": "Stop Settling for Mediocre Deals", "date": "Sep 10", "views": 392, "quarter": "Q3 '26"}, {"idx": 87, "title": "Wealthy Investors Are Split", "date": "Sep 11", "views": 253, "quarter": "Q3 '26"}, {"idx": 88, "title": "AI Will Reinvent Deal Flow", "date": "Sep 11", "views": 744, "quarter": "Q3 '26"}, {"idx": 89, "title": "Private Investing Isn’t Passive", "date": "Sep 12", "views": 995, "quarter": "Q3 '26"}, {"idx": 90, "title": "Rent Growth? Based on What?", "date": "Sep 14", "views": 41, "quarter": "Q3 '26"}, {"idx": 91, "title": "Multifamily Got Crushed. Now We’re Buying.", "date": "Sep 16", "views": 124, "quarter": "Q3 '26"}, {"idx": 92, "title": "Distressed Sponsor. Great Deal.", "date": "Sep 16", "views": 641, "quarter": "Q3 '26"}, {"idx": 93, "title": "You Learned the Wrong Lesson", "date": "Sep 17", "views": 73, "quarter": "Q3 '26"}, {"idx": 94, "title": "You Don’t Have to Be a Genius. Just Don’t Be an Idiot.", "date": "Sep 18", "views": 330, "quarter": "Q3 '26"}, {"idx": 95, "title": "Your Advisor Doesn’t Get Paid to Make You Money", "date": "Sep 18", "views": 132, "quarter": "Q3 '26"}, {"idx": 96, "title": "Interest Rates Change. Your Basis Doesn’t.", "date": "Sep 19", "views": 453, "quarter": "Q3 '26"}, {"idx": 97, "title": "Forget the Price. Buy the Cash Flow.", "date": "Sep 19", "views": 697, "quarter": "Q3 '26"}, {"idx": 98, "title": "The Math Is Forcing People to Rent", "date": "Sep 20", "views": 1016, "quarter": "Q3 '26"}, {"idx": 99, "title": "It Ain’t Vegas Anymore", "date": "Sep 20", "views": 1016, "quarter": "Q3 '26"}, {"idx": 100, "title": "Why Real Estate Is Always Two Years Late", "date": "Sep 21", "views": 1066, "quarter": "Q3 '26"}, {"idx": 101, "title": "Not All Multifamily Is in Trouble", "date": "Sep 21", "views": 136, "quarter": "Q3 '26"}, {"idx": 102, "title": "How Much Should You Have by 40?", "date": "Sep 23", "views": 799, "quarter": "Q3 '26"}, {"idx": 103, "title": "Double Your Money? Run", "date": "Sep 23", "views": 319, "quarter": "Q3 '26"}, {"idx": 104, "title": "The Short-Term Rental Loophole", "date": "Sep 24", "views": 1045, "quarter": "Q3 '26"}, {"idx": 105, "title": "The W-2 Tax Trap", "date": "Sep 24", "views": 291, "quarter": "Q3 '26"}, {"idx": 106, "title": "I Sold My Car to Build Wealth", "date": "Sep 25", "views": 1003, "quarter": "Q3 '26"}, {"idx": 107, "title": "Can’t Buy It Twice? Don’t Buy It", "date": "Sep 25", "views": 655, "quarter": "Q3 '26"}, {"idx": 108, "title": "Debt Kills Compounding", "date": "Sep 26", "views": 482, "quarter": "Q3 '26"}, {"idx": 109, "title": "When Investing Beats Your Income", "date": "Sep 26", "views": 234, "quarter": "Q3 '26"}, {"idx": 110, "title": "These Two Things Shape Your Life", "date": "Sep 27", "views": 40, "quarter": "Q3 '26"}];
+const YT_BUCKETS={"Q1": {"ILAB main show": {"views": 7290, "hours": 1454, "subs": 81}, "Out of the Box": {"views": 0, "hours": 0, "subs": 0}, "Outlook & special": {"views": 808, "hours": 142, "subs": 5}, "Shorts & clips": {"views": 31718, "hours": 190, "subs": 35}, "Pre-2026 catalog": {"views": 3412, "hours": 547, "subs": 57}, "Channel total": {"views": 43231, "hours": 2333, "subs": 250, "impr": 178127, "ctr": 3.77}}, "Q2": {"ILAB main show": {"views": 6964, "hours": 1066, "subs": 75}, "Out of the Box": {"views": 1025, "hours": 81, "subs": 24}, "Outlook & special": {"views": 48, "hours": 6, "subs": 0}, "Shorts & clips": {"views": 49712, "hours": 263, "subs": 59}, "Pre-2026 catalog": {"views": 2364, "hours": 379, "subs": 37}, "Channel total": {"views": 60165, "hours": 1795, "subs": 221, "impr": 167466, "ctr": 3.5}}, "Q3": {"ILAB main show": {"views": 8189, "hours": 818, "subs": 47}, "Out of the Box": {"views": 1186, "hours": 63, "subs": 5}, "Outlook & special": {"views": 20, "hours": 2, "subs": 0}, "Shorts & clips": {"views": 52471, "hours": 334, "subs": 66}, "Pre-2026 catalog": {"views": 3134, "hours": 354, "subs": 51}, "Channel total": {"views": 65152, "hours": 1572, "subs": 188, "impr": 152637, "ctr": 3.4}}};
+const PODCAST_Q3=[{"idx": 0, "title": "Why Your Index Fund Isn't as Safe as You Think", "date": "Jul 7", "first7": 1116, "vsNormal": "2% above normal", "completion": null}, {"idx": 1, "title": "Why Now Is the Time for Private Alternatives", "date": "Jul 14", "first7": 1116, "vsNormal": "2% above normal", "completion": null}, {"idx": 2, "title": "The Economic War Every Investor Should Understand", "date": "Jul 21", "first7": 1090, "vsNormal": "1% below normal", "completion": 47}, {"idx": 3, "title": "He Reviewed $8 Billion in Retirement Accounts. Here's What He Learned.", "date": "Jul 28", "first7": 1107, "vsNormal": "1% above normal", "completion": 61}, {"idx": 4, "title": "If We Had $5 Million to Invest Today, Here's Exactly What We'd Do", "date": "Aug 4", "first7": 1370, "vsNormal": "25% above normal", "completion": 53}, {"idx": 5, "title": "Should You Own Gold? David Morgan & Bob Fraser Weigh In", "date": "Aug 11", "first7": 1022, "vsNormal": "7% below normal", "completion": 46}, {"idx": 6, "title": "Private Markets Are Going Mainstream. Is That a Good Thing?", "date": "Aug 18", "first7": 1070, "vsNormal": "3% below normal", "completion": 52}, {"idx": 7, "title": "China’s 90% Model: The Economic War No One Is Talking About", "date": "Aug 25", "first7": 1057, "vsNormal": "4% below normal", "completion": 57}, {"idx": 8, "title": "Why RIAs Can’t Ignore Private Alternatives Anymore", "date": "Sep 1", "first7": 1006, "vsNormal": "8% below normal", "completion": 60}, {"idx": 9, "title": "Hard Truths About Private Markets with Aleksey Chernobelskiy (GP-LP Match)", "date": "Sep 8", "first7": 1087, "vsNormal": "1% below normal", "completion": 47}, {"idx": 10, "title": "The State of Multifamily: Why We’re Buying Now", "date": "Sep 15", "first7": 1155, "vsNormal": "5% above normal", "completion": 38}, {"idx": 11, "title": "Wealth Advice for HENRYs (High Earners, Not Rich Yet)", "date": "Sep 22", "first7": 1133, "vsNormal": "4% above normal", "completion": 51}];
+
+const pctChg=(a,b)=>b?Math.round(((a-b)/b)*100):0;
+const signed=(n)=>(n>0?"+":"")+n+"%";
+const avgOf=(arr,k)=>arr.reduce((s,x)=>s+x[k],0)/arr.length;
+
+function QuarterTrend({labels,values,color,markerAt,markerLabel,height=190,valueFmt=fmt}){
+  const max=Math.max(...values)*1.15||1,W=680,H=height,pad={t:22,r:8,b:28,l:44},cW=W-pad.l-pad.r,cH=H-pad.t-pad.b,bW=cW/values.length,gap=Math.max(4,bW*0.28);
+  const mx=pad.l+markerAt*bW;
+  return(<svg viewBox={`0 0 ${W} ${H}`} style={{width:"100%",height}} preserveAspectRatio="none" role="img" aria-label={`Bar chart: ${labels.map((l,i)=>l+" "+valueFmt(values[i])).join(", ")}`}>
+    {values.map((v,i)=>{const bh=Math.max(1,(v/max)*cH),x=pad.l+i*bW+gap/2,y=pad.t+cH-bh,after=i>=markerAt;return<g key={i}>
+      <rect x={x} y={y} width={bW-gap} height={bh} fill={color} opacity={after?0.9:0.3} rx={2}/>
+      <text x={x+(bW-gap)/2} y={y-5} textAnchor="middle" fontSize={10} fill={after?"#333":"#aaa"} fontWeight={after?600:400}>{valueFmt(v)}</text>
+      <text x={pad.l+i*bW+bW/2} y={H-pad.b+15} textAnchor="middle" fontSize={9} fill="#999">{labels[i]}</text></g>;})}
+    <line x1={mx} x2={mx} y1={pad.t-14} y2={pad.t+cH} stroke="#111" strokeWidth={1} strokeDasharray="3 3"/>
+    <text x={mx+5} y={pad.t-6} fontSize={10} fill="#111" fontWeight={600}>{markerLabel}</text>
+  </svg>);
+}
+
+function SimpleTable({cols,rows,highlightFrom}){
+  const th={textAlign:"left",padding:"7px 10px",fontSize:10,color:"#999",borderBottom:"0.5px solid #eee",whiteSpace:"nowrap",fontWeight:500};
+  const td={padding:"7px 10px",fontSize:12,borderBottom:"0.5px solid #f5f5f5",whiteSpace:"nowrap"};
+  return(<div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse"}}>
+    <thead><tr>{cols.map((c,i)=><th key={i} style={{...th,textAlign:i===0?"left":"right",...(highlightFrom!=null&&i>=highlightFrom?{color:"#111"}:{})}}>{c}</th>)}</tr></thead>
+    <tbody>{rows.map((r,ri)=><tr key={ri} style={r.bold?{background:"#fafafa"}:{}}>{r.cells.map((c,i)=><td key={i} style={{...td,textAlign:i===0?"left":"right",fontWeight:r.bold||i===0?600:400,color:i===0?"#333":(highlightFrom!=null&&i<highlightFrom?"#999":"#111")}}>{c}</td>)}</tr>)}</tbody>
+  </table></div>);
+}
+
+function Note({children}){return <div style={{fontSize:11,color:"#777",lineHeight:1.5,marginTop:8}}>{children}</div>;}
+
+function PodcastQ3Table({data}){
+  const max=Math.max(...data.map(e=>e.first7));
+  const th={textAlign:"left",padding:"7px 10px",fontSize:10,color:"#999",borderBottom:"0.5px solid #eee",whiteSpace:"nowrap",fontWeight:500};
+  const td={padding:"8px 10px",fontSize:12,borderBottom:"0.5px solid #f5f5f5",verticalAlign:"middle"};
+  return(<div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse",minWidth:560}}>
+    <thead><tr><th style={th}>Episode</th><th style={th}>Published</th><th style={th}>First 7 days</th><th style={th}>vs. normal</th><th style={th}>Completion</th></tr></thead>
+    <tbody>{data.map((e,i)=><tr key={i} style={{background:i%2?"#fafafa":"#fff"}}>
+      <td style={{...td,maxWidth:0,minWidth:200}}><span title={e.title} style={{display:"block",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{e.title}</span></td>
+      <td style={{...td,color:"#999"}}>{e.date}</td>
+      <td style={td}><div style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:36,height:3,background:"#eee",borderRadius:2}}><div style={{width:`${Math.round(e.first7/max*100)}%`,height:"100%",background:SP_COLOR,borderRadius:2}}/></div><span style={{fontWeight:500}}>{e.first7.toLocaleString()}</span></div></td>
+      <td style={{...td,color:e.vsNormal.includes("above")?"#16a34a":"#999"}}>{e.vsNormal}</td>
+      <td style={{...td,color:"#555"}}>{e.completion!=null?e.completion+"%":"—"}</td>
+    </tr>)}</tbody></table></div>);
+}
+
+// ── Tab: Growth since Jan '26 ───────────────────────────────────────────────
+function GrowthTab(){
+  const ytBefore=YT_QTR.slice(0,START_IDX),ytAfter=YT_QTR.slice(START_IDX);
+  const podBefore=POD_QTR.slice(0,START_IDX),podAfter=POD_QTR.slice(START_IDX);
+  const q3=YT_QTR[5],q3ly=YT_QTR[1];
+  const ytMult=(q3.views/q3ly.views).toFixed(1);
+  const ytAvgB=avgOf(ytBefore,"views"),ytAvgA=avgOf(ytAfter,"views");
+  const audB=avgOf(podBefore,"audience"),audA=avgOf(podAfter,"audience");
+  const hrsB=avgOf(podBefore,"spHours"),hrsA=avgOf(podAfter,"spHours");
+  const labels=YT_QTR.map(x=>x.q);
+  const qs=["Q1","Q2","Q3"];
+  const ytd=(b,k)=>qs.reduce((s,q)=>s+(YT_BUCKETS[q][b]?YT_BUCKETS[q][b][k]:0),0);
+  return(<div>
+    <div style={{fontSize:11,color:"#aaa",marginBottom:16}}>Jan – Sep 2026 compared with the three quarters before · Q3 '26 runs through Sep 27 (YouTube) and Sep 28 (podcast)</div>
+
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:8,marginBottom:20}}>
+      <MCard label="YouTube views, Q3 vs Q3 '25" value={ytMult+"×"} sub={`${fmt(q3ly.views)} → ${fmt(q3.views)}`} color={YT_COLOR}/>
+      <MCard label="YouTube views per quarter" value={fmt(ytAvgA)} sub={`avg since Jan, vs ${fmt(ytAvgB)} before`} color={YT_COLOR}/>
+      <MCard label="Podcast listeners per quarter" value={fmt(audA)} sub={`${signed(pctChg(audA,audB))} vs ${fmt(audB)} before`} color={SP_COLOR}/>
+      <MCard label="Spotify listening hours / qtr" value={Math.round(hrsA).toLocaleString()+"h"} sub={`${signed(pctChg(hrsA,hrsB))} vs ${Math.round(hrsB)}h before`} color={SP_COLOR}/>
+    </div>
+
+    <div style={sL(YT_COLOR)}>YouTube — views by quarter</div>
+    <div style={{...card(),marginBottom:12}}><QuarterTrend labels={labels} values={YT_QTR.map(x=>x.views)} color={YT_COLOR} markerAt={START_IDX} markerLabel="New content strategy (Jan '26)"/></div>
+    <div style={sL(YT_COLOR)}>YouTube — watch hours by quarter</div>
+    <div style={{...card(),marginBottom:12}}><QuarterTrend labels={labels} values={YT_QTR.map(x=>x.hours)} color={YT_COLOR} markerAt={START_IDX} markerLabel="New content strategy (Jan '26)" valueFmt={v=>Math.round(v).toLocaleString()}/>
+      <Note>Watch hours are up {signed(pctChg(q3.hours,q3ly.hours))} year over year. Q1 '26 is the peak because the two-part Whole Life Insurance debate earned about 824 watch hours on its own.</Note></div>
+    <div style={{...card(),marginBottom:20}}><SimpleTable highlightFrom={START_IDX+1} cols={["",...labels]} rows={[
+      {cells:["Views",...YT_QTR.map(x=>x.views.toLocaleString())]},
+      {cells:["Watch hours",...YT_QTR.map(x=>x.hours.toLocaleString())]},
+      {cells:["New subscribers",...YT_QTR.map(x=>"+"+x.subs)]},
+    ]}/></div>
+
+    <div style={sL(YT_COLOR)}>YouTube 2026 — by content type</div>
+    <div style={{...card(),marginBottom:8}}><SimpleTable cols={["Views","Q1 '26","Q2 '26","Q3 '26","YTD"]} rows={[
+      ...BUCKET_ORDER.map(b=>({cells:[b,...qs.map(q=>YT_BUCKETS[q][b].views?YT_BUCKETS[q][b].views.toLocaleString():"—"),ytd(b,"views").toLocaleString()]})),
+      {bold:true,cells:["Channel total",...qs.map(q=>YT_BUCKETS[q]["Channel total"].views.toLocaleString()),ytd("Channel total","views").toLocaleString()]},
+    ]}/></div>
+    <div style={{...card(),marginBottom:8}}><SimpleTable cols={["Watch hours","Q1 '26","Q2 '26","Q3 '26","YTD"]} rows={[
+      ...BUCKET_ORDER.map(b=>({cells:[b,...qs.map(q=>YT_BUCKETS[q][b].hours?YT_BUCKETS[q][b].hours.toLocaleString():"—"),ytd(b,"hours").toLocaleString()]})),
+      {bold:true,cells:["Channel total",...qs.map(q=>YT_BUCKETS[q]["Channel total"].hours.toLocaleString()),ytd("Channel total","hours").toLocaleString()]},
+    ]}/></div>
+    <Note>Each quarter counts views that quarter on every video of that type, including episodes published earlier. "Outlook & special" is the Feb '26 macro outlook presentations, clip, and Bob &amp; Ben React videos. Rows add up to the YouTube Studio channel total (within about 0.01%, from export row limits).</Note>
+    <div style={{height:20}}/>
+
+    <div style={sL(SP_COLOR)}>Podcast — unique listeners by quarter (all platforms)</div>
+    <div style={{...card(),marginBottom:12}}><QuarterTrend labels={POD_QTR.map(x=>x.q)} values={POD_QTR.map(x=>x.audience)} color={SP_COLOR} markerAt={START_IDX} markerLabel="New content strategy (Jan '26)"/></div>
+    <div style={{...card(),marginBottom:20}}><SimpleTable highlightFrom={START_IDX+1} cols={["",...POD_QTR.map(x=>x.q)]} rows={[
+      {cells:["Plays & downloads (all)",...POD_QTR.map(x=>x.plays.toLocaleString())]},
+      {cells:["Unique listeners (all)",...POD_QTR.map(x=>x.audience.toLocaleString())]},
+      {cells:["Spotify listening hours",...POD_QTR.map(x=>x.spHours.toLocaleString())]},
+      {cells:["Spotify new listeners*",...POD_QTR.map(x=>x.spNew.toLocaleString())]},
+      {cells:["Spotify returning share",...POD_QTR.map(x=>x.spReturnPct+"%")]},
+      {cells:["Spotify followers gained",...POD_QTR.map(x=>"+"+x.spFollowGain)]},
+    ]}/>
+      <Note>*Approximate: summed from daily counts. Spotify rows cover the Spotify app only (about 21% of listening). Q1 '25 is left out because it was an unusually low quarter.</Note></div>
+
+    <div style={sL(AP_COLOR)}>Apple Podcasts — 2026 by month</div>
+    <div style={{...card(),marginBottom:20}}><SimpleTable cols={["",...APPLE_2026.map(m=>m.month.slice(0,3))]} rows={[
+      {cells:["Plays",...APPLE_2026.map(m=>fmt(m.plays))]},
+      {cells:["Listeners",...APPLE_2026.map(m=>m.listeners)]},
+      {cells:["Engaged listeners",...APPLE_2026.map(m=>m.engaged)]},
+      {cells:["Hours",...APPLE_2026.map(m=>m.hours)]},
+      {cells:["Followers",...APPLE_2026.map(m=>fmt(m.followers))]},
+    ]}/><Note>From Apple Podcasts Connect. Apple counts plays differently from the all-platform total, so these aren't added to it. September runs through the 28th.</Note></div>
+
+    <div style={sL("#666")}>Who's listening</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))",gap:8}}>
+      <div style={card()}><SimpleTable cols={["Age","2025","2026 YTD"]} rows={AUDIENCE_AGE.map(a=>({cells:[a.age,a.y25.toFixed(0)+"%",a.y26.toFixed(0)+"%"]}))}/>
+        <Note>{Math.round(AUDIENCE_AGE.slice(2).reduce((t,a)=>t+a.y26,0))}% of listeners are 35 or older. Women grew from {AUDIENCE_GENDER.y25.female.toFixed(0)}% to {AUDIENCE_GENDER.y26.female.toFixed(0)}% of the audience.</Note></div>
+      <div style={card()}><SimpleTable cols={["Listening app","Share"]} rows={LISTENING_APPS.map(a=>({cells:[a.app,a.pct.toFixed(0)+"%"]}))}/>
+        <Note>Last 30 days, all platforms.</Note></div>
+    </div>
+  </div>);
+}
+
+// ── Tab: Q3 2026 ────────────────────────────────────────────────────────────
+function Q3Tab(){
+  const yq3=YT_BUCKETS.Q3["Channel total"],yq2=YT_BUCKETS.Q2["Channel total"];
+  const pq3=POD_QTR[5],pq2=POD_QTR[4];
+  const withComp=PODCAST_Q3.filter(e=>e.completion!=null);
+  const avgComp=Math.round(withComp.reduce((s,e)=>s+e.completion,0)/withComp.length);
+  const avgFirst7=Math.round(avgOf(PODCAST_Q3,"first7"));
+  const ap=m=>APPLE_2026.filter(x=>m.includes(x.month.slice(0,3)));
+  const apQ3=ap(["Jul","Aug","Sep"]),apQ2=ap(["Apr","May","Jun"]);
+  const sumK=(a,k)=>a.reduce((s,x)=>s+x[k],0);
+  return(<div>
+    <div style={{fontSize:11,color:"#aaa",marginBottom:16}}>Jul 1 – Sep 27, 2026 (YouTube) · Jul 1 – Sep 28 (podcast) · compared with Q2</div>
+
+    <div style={sL(YT_COLOR)}>YouTube channel</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:8,marginBottom:16}}>
+      <MCard label="Total views" value={fmt(yq3.views)} sub={signed(pctChg(yq3.views,yq2.views))+" vs Q2 · incl. Shorts"} color={YT_COLOR}/>
+      <MCard label="Watch hours" value={yq3.hours.toLocaleString()+"h"} sub={signed(pctChg(yq3.hours,yq2.hours))+" vs Q2"}/>
+      <MCard label="New subscribers" value={"+"+yq3.subs} sub={"vs +"+yq2.subs+" in Q2"}/>
+      <MCard label="Impressions · CTR" value={fmt(yq3.impr)} sub={yq3.ctr+"% CTR (Q2: "+yq2.ctr+"%)"}/>
+    </div>
+    <div style={{...card(),marginBottom:16}}><SimpleTable cols={["By content type","Q2 views","Q3 views","Q2 hours","Q3 hours"]} rows={[
+      ...BUCKET_ORDER.map(b=>({cells:[b,YT_BUCKETS.Q2[b].views.toLocaleString(),YT_BUCKETS.Q3[b].views.toLocaleString(),YT_BUCKETS.Q2[b].hours.toLocaleString(),YT_BUCKETS.Q3[b].hours.toLocaleString()]})),
+      {bold:true,cells:["Channel total",yq2.views.toLocaleString(),yq3.views.toLocaleString(),yq2.hours.toLocaleString(),yq3.hours.toLocaleString()]},
+    ]}/><Note>Main-show views rose {signed(pctChg(YT_BUCKETS.Q3["ILAB main show"].views,YT_BUCKETS.Q2["ILAB main show"].views))} but watch hours fell {Math.abs(pctChg(YT_BUCKETS.Q3["ILAB main show"].hours,YT_BUCKETS.Q2["ILAB main show"].hours))}%: more people are clicking in, and each viewer is watching for less time.</Note></div>
+
+    <div style={sL(YT_COLOR)}>YouTube — ILAB main show ({YT_FLAGSHIP_Q3.length} episodes)</div>
+    <div style={{...card(),marginBottom:16}}><YTEpisodeTable data={YT_FLAGSHIP_Q3} maxViews={Math.max(...YT_FLAGSHIP_Q3.map(e=>e.views))}/></div>
+    <div style={sL(OOTB_COLOR)}>YouTube — Out of the Box ({YT_OOTB_Q3.length} episodes)</div>
+    <div style={{...card(),marginBottom:16}}><YTEpisodeTable data={YT_OOTB_Q3} maxViews={Math.max(...YT_OOTB_Q3.map(e=>e.views))}/></div>
+    <div style={sL("#888")}>YouTube — Shorts &amp; clips published in Q3 ({YT_SHORTS_Q3.length})</div>
+    <div style={{...card(),marginBottom:24,maxHeight:360,overflowY:"auto"}}><ShortsTable data={YT_SHORTS_Q3}/></div>
+
+    <div style={sL(SP_COLOR)}>Podcast — all platforms</div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:8,marginBottom:16}}>
+      <MCard label="Plays & downloads" value={fmt(pq3.plays)} sub={signed(pctChg(pq3.plays,pq2.plays))+" vs Q2"} color={SP_COLOR}/>
+      <MCard label="Unique listeners" value={fmt(pq3.audience)} sub={signed(pctChg(pq3.audience,pq2.audience))+" vs Q2 · "+signed(pctChg(pq3.audience,POD_QTR[1].audience))+" vs Q3 '25"}/>
+      <MCard label="Avg first-week plays" value={avgFirst7.toLocaleString()} sub={`per episode (${PODCAST_Q3.length} eps)`}/>
+      <MCard label="Avg completion" value={avgComp+"%"} sub={`Spotify · ${withComp.length} eps (Q2: 47%)`}/>
+    </div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:8,marginBottom:16}}>
+      <div style={card()}><div style={{fontSize:12,fontWeight:500,marginBottom:10}}>Monthly plays (all platforms)</div><SimpleBar labels={PODCAST_Q3_MONTHLY.map(m=>m.month)} values={PODCAST_Q3_MONTHLY.map(m=>m.plays)} color={SP_COLOR} height={120}/><Note>September runs through the 27th.</Note></div>
+      <div style={card()}><div style={{fontSize:12,fontWeight:500,marginBottom:10}}>Spotify impressions</div><SimpleBar labels={SP_IMPR_Q3.map(m=>m.month)} values={SP_IMPR_Q3.map(m=>m.impr)} color="#94a3b8" height={120}/><Note>How often Spotify showed the show (61% Home feed). September runs through the 26th.</Note></div>
+    </div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(150px,1fr))",gap:8,marginBottom:16}}>
+      <MCard label="Spotify listening hours" value={pq3.spHours.toLocaleString()+"h"} sub={signed(pctChg(pq3.spHours,POD_QTR[1].spHours))+" vs Q3 '25"}/>
+      <MCard label="Spotify returning share" value={pq3.spReturnPct+"%"} sub={"of listening (Q2: "+pq2.spReturnPct+"%)"}/>
+      <MCard label="Spotify new listeners" value={"~"+pq3.spNew} sub={"vs ~"+pq2.spNew+" in Q2"}/>
+      <MCard label="Spotify followers" value={SP_FOLLOWERS_Q3.start.toLocaleString()+"→"+SP_FOLLOWERS_Q3.end.toLocaleString()} sub={"+"+(SP_FOLLOWERS_Q3.end-SP_FOLLOWERS_Q3.start)+" in Q3"}/>
+    </div>
+    <div style={sL(SP_COLOR)}>Podcast — per episode</div>
+    <div style={{...card(),marginBottom:24}}><PodcastQ3Table data={PODCAST_Q3}/><Note>First 7 days = all-platform plays in each episode's first week, the fairest way to compare episodes of different ages.</Note></div>
+
+    <div style={sL(AP_COLOR)}>Apple Podcasts</div>
+    <div style={card()}><SimpleTable highlightFrom={2} cols={["","Q2 '26","Q3 '26","Change"]} rows={[
+      ["Plays","plays"],["Listening hours","hours"]].map(([l,k])=>({cells:[l,sumK(apQ2,k).toLocaleString(),sumK(apQ3,k).toLocaleString(),signed(pctChg(sumK(apQ3,k),sumK(apQ2,k)))]})).concat(
+      [["Avg monthly listeners","listeners"],["Avg monthly engaged","engaged"]].map(([l,k])=>({cells:[l,Math.round(avgOf(apQ2,k)),Math.round(avgOf(apQ3,k)),signed(pctChg(avgOf(apQ3,k),avgOf(apQ2,k)))]})),
+      [{cells:["Followers (end of quarter)","2.4K","2.6K","+8%"]}])}/>
+      <Note>Monthly figures from Apple Podcasts Connect; September runs through the 28th.</Note></div>
+  </div>);
+}
+
 // ── Tab: YTD Overview ─────────────────────────────────────────────────────
 function YTDOverviewTab(){
   const pct=(a,b)=>b===0?"—":(((a-b)/b)*100>=0?"+":"")+Math.round(((a-b)/b)*100)+"%";
@@ -492,7 +736,7 @@ function YTDOverviewTab(){
           ["YT watch hours",Q1_YT_WATCH_HOURS,Q2_YT_WATCH_HOURS,v=>fmt(v)+"h"],
           ["Podcast plays",Q1_POD_PLAYS,POD_Q2_TOTAL,v=>fmt(v)],
         ])}
-        <div style={{fontSize:10,color:"#bbb",marginTop:4}}>Spotify followers: 2,213 → 2,282 (+69, Q2) · Apple followers: 3,400 (Mar '26)</div>
+        <div style={{fontSize:10,color:"#bbb",marginTop:4}}>Spotify followers: 2,213 → 2,282 (+69, Q2) · Apple followers: 2,300 (Mar '26)</div>
       </div>
  
       <div style={{...card(),padding:"14px 16px"}}>
@@ -727,21 +971,23 @@ function PodcastTab(){
   </div>);
 }
  
-const TABS=["YTD Overview","Q1 2026","Q2 2026","Content Performance","YouTube","Podcast"];
+const TABS=["Growth Since Jan '26","Q3 2026","H1 2026 Overview","Q1 2026","Q2 2026","Content Performance","YouTube","Podcast"];
 const PC={YouTube:YT_COLOR,"Apple Podcasts":AP_COLOR,Spotify:SP_COLOR};
  
 export default function App(){
-  const [tab,setTab]=useState("YTD Overview");
+  const [tab,setTab]=useState("Growth Since Jan '26");
   return(
     <div style={{padding:"1.25rem 1rem",maxWidth:780,margin:"0 auto",fontFamily:"system-ui,sans-serif",color:"#111"}}>
       <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:20}}>
-        <div><h2 style={{margin:"0 0 3px",fontSize:20,fontWeight:600}}>Invest Like a Billionaire</h2><p style={{margin:0,fontSize:12,color:"#999"}}>Analytics Dashboard · Updated Jul 2026</p></div>
+        <div><h2 style={{margin:"0 0 3px",fontSize:20,fontWeight:600}}>Invest Like a Billionaire</h2><p style={{margin:0,fontSize:12,color:"#999"}}>Analytics Dashboard · Updated Sep 2026</p></div>
         <div style={{display:"flex",gap:12}}>{Object.entries(PC).map(([name,color])=><div key={name} style={{display:"flex",alignItems:"center",gap:5,fontSize:11}}><div style={{width:8,height:8,borderRadius:"50%",background:color}}/><span style={{color:"#666"}}>{name}</span></div>)}</div>
       </div>
       <div style={{display:"flex",gap:2,marginBottom:20,borderBottom:"0.5px solid #e5e5e5",overflowX:"auto"}}>
         {TABS.map(t=><button key={t} onClick={()=>setTab(t)} style={{padding:"8px 14px",fontSize:12,border:"none",background:"none",cursor:"pointer",whiteSpace:"nowrap",color:tab===t?"#111":"#888",fontWeight:tab===t?600:400,borderBottom:tab===t?"2px solid #111":"2px solid transparent",marginBottom:-1}}>{t}</button>)}
       </div>
-      {tab==="YTD Overview"&&<YTDOverviewTab/>}
+      {tab==="Growth Since Jan '26"&&<GrowthTab/>}
+      {tab==="Q3 2026"&&<Q3Tab/>}
+      {tab==="H1 2026 Overview"&&<YTDOverviewTab/>}
       {tab==="Q1 2026"&&<Q1Tab/>}
       {tab==="Q2 2026"&&<Q2Tab/>}
       {tab==="Content Performance"&&<ContentPerformanceTab/>}
